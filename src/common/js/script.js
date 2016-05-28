@@ -20,6 +20,9 @@ KangoAPI.onReady(function() {
     }
 
     function abort() {
+        log('Sending an abort');
+        $(".main").append('No DNS records found');
+
         throw new Error('No DNS Records Found');
     }
 
@@ -62,14 +65,14 @@ KangoAPI.onReady(function() {
         log('Rending Records');
 
         $.each( data.dns_records, function( index, value ){
-            $("body").append('<strong>'+index+'</strong><br />');
+            $(".main").append('<strong>'+index+'</strong><br />');
             $.each(value, function( key, record ){
-                $("body").append(record + '<br />');
+                $(".main").append(record + '<br />');
             });
-            $("body").append('<br />');
+            $(".main").append('<br />');
         });
 
-        $("body").html(newHTML.join(""));
+
     }
 
 });

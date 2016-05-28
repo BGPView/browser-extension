@@ -1,0 +1,38 @@
+body {
+    background: #ffffff;
+    color: #676767;
+    margin: 0 auto;
+    width: 400px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.navbar-brand {
+    width: 400px;
+    padding: 5px;
+}
+
+.navbar-brand img {
+    display: block;
+    margin: 0 auto;
+    height: 40px;
+}
+
+.main {
+    margin-top: 80px;
+}
+
+.navbar {
+    background-color: #465862;
+    border-bottom: 1px solid #424C52;
+    backface-visibility: hidden;
+}
+
+a, a:hover, a:visited, a:link, a:active {
+    text-decoration: none;
+}
+
+a {
+    color: #2C94B3;
+}
