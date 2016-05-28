@@ -21,6 +21,8 @@ KangoAPI.onReady(function() {
 
     function abort() {
         log('Sending an abort');
+
+        $('.loader').hide();
         $(".main").append('No DNS records found');
 
         throw new Error('No DNS Records Found');
@@ -48,7 +50,7 @@ KangoAPI.onReady(function() {
                 if (data.status == 'error') {
                     log('API Call errored: ' + data.status_message)
                     return abort();
-                } else if (data.data.length < 1) {
+                } else if (data.data.dns_records.length < 1) {
                     log('Domain returned no DNS records')
                     return abort();
                 }
