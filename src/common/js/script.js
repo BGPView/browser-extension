@@ -63,6 +63,7 @@ KangoAPI.onReady(function() {
     function displayRecords(data)
     {
         log('Rending Records');
+        $('.loader').hide();
 
         $.each( data.dns_records, function( index, value ){
             $(".main").append('<strong>'+index+'</strong><br />');
