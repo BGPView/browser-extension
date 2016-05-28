@@ -67,15 +67,22 @@ KangoAPI.onReady(function() {
         log('Rending Records');
         $('.loader').hide();
 
-        $.each( data.dns_records, function( index, value ){
-            $(".main").append('<strong>'+index+'</strong><br />');
+        var active = 'active';
+        $.each(data.dns_records, function( index, value ){
+            var htmlUl = '<li role="presentation" class="' + active + '"><a href="#table-results-' + index + '" aria-controls="table-results-' + index + '" role="tab" data-toggle="tab" aria-expanded="true">' + index + '</a></li>';
+            $("#records-tab").append(htmlUl);
+
+            var tabbedContentHtml = '<div role="tabpanel" class="tab-pane ' + active + '" id="table-results-' + index + '"></div>';
+            $(".records-tabbed-content").find('.tab-content').append(tabbedContentHtml);
+
             $.each(value, function( key, record ){
-                $(".main").append(record + '<br />');
+                $('#table-results-' + index).append(record + '<br />');
             });
-            $(".main").append('<br />');
+
+            if (active !== '') {
+                active = ''
+            }
         });
-
-
     }
 
 });
