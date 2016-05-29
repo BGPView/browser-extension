@@ -11,7 +11,8 @@ KangoAPI.onReady(function() {
 
         $('.tab-content').text('');
         $('.nav-tabs').text('');
-        $('.current-domain').hide();
+        $("#records-tab").text('');
+        $('.current-input').hide();
         $('.base-domain').hide();
         $('.loader').show();
 
@@ -25,6 +26,7 @@ KangoAPI.onReady(function() {
 
         if (validIP(hostname)) {
             log('hostname is an IP address');
+            getAdressInfo(hostname);
         } else {
             getDnsRecords(hostname);
         }
@@ -124,15 +126,65 @@ KangoAPI.onReady(function() {
         });
     }
 
+    function getAdressInfo(ipAddress)
+    {
+        var apiUrl = 'https://api.bgpview.io/ip/' + ipAddress;
+        log('IP query URL: ' + apiUrl);
+
+        var cachedInfo = getCahed(ipAddress);
+        if (cachedInfo !== false) {
+            return displayIpInfo(cachedInfo);
+        }
+
+        $.ajax({
+            url: apiUrl,
+            dataType: "json",
+            error: function(xhr){
+                log('API Call errored: ' + xhr.responseText)
+                return abort();
+            },
+            success: function(data){
+                if (data.status == 'error') {
+                    log('API Call errored: ' + data.status_message)
+                    return abort();
+                }
+
+                log(data);
+                setCahed(ipAddress, data.data);
+
+                return displayIpInfo(data.data);
+            },
+            timeout: 6000 // sets timeout to 6 seconds
+        });
+    }
+
+    function displayIpInfo(data)
+    {
+        log('Processing IP info display');
+        $('.loader').hide();
+
+        $('.current-input a').text(data.ip);
+        $('.current-input').show();
+
+        var htmlUl = '<li role="presentation" class="active"><a href="#table-results-ip-info" aria-controls="table-results-ip-info" role="tab" data-toggle="tab" aria-expanded="true">IP Info</a></li>';
+        htmlUl += '<li role="presentation"><a href="#table-results-ip-asns" aria-controls="table-results-ip-asns" role="tab" data-toggle="tab" aria-expanded="true">ASN(s)</a></li>';
+        $("#records-tab").html(htmlUl);
+
+        var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-ip-info">IP INFO</div>';
+        tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-ip-asns">IP ASN</div>';
+        $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
+
+    }
+
     function displayRecords(data)
     {
         log('Processing record display');
         $('.loader').hide();
 
-        $('.current-domain a').text(data.hostname);
+        $('.current-input a').text(data.hostname);
         $('.base-domain a').text(data.base_domain);
 
-        $('.current-domain').show();
+        $('.current-input').show();
         if (data.hostname != data.base_domain) {
             $('.base-domain').show();
         }
@@ -184,7 +236,7 @@ KangoAPI.onReady(function() {
 
             html += '<tr>';
             html +=     '<td><img src="' + flagImage + '" /></td>';
-            html +=     '<td>' + record.address + '</td>';
+            html +=     '<td><a class="lookup-able" href="#">' + record.address + '</a></td>';
             html +=     '<td>' + record.location + '</td>';
             html += '</tr>';
         });
@@ -202,7 +254,7 @@ KangoAPI.onReady(function() {
         $.each(records, function( key, record ){
 
             if (makeLink === true) {
-                record = '<a class="domain" href="#">' + record + '</a>';
+                record = '<a class="lookup-able" href="#">' + record + '</a>';
             }
 
             html += '<tr>';
@@ -249,7 +301,7 @@ KangoAPI.onReady(function() {
         return renderStringRecords('CNAME', records, true)
     }
 
-    $('body').on('click', '.current-domain a, .base-domain a, .domain', function(){
+    $('body').on('click', '.lookup-able', function(){
         start($(this).text(), true);
     })
 

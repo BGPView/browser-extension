@@ -23,7 +23,7 @@ body {
     margin-top: 60px;
 }
 
-.current-domain a, .base-domain a {
+.current-input a, .base-domain a {
     font-weight: bold;
 }
 
