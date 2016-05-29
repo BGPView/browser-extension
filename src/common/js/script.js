@@ -3,25 +3,43 @@ KangoAPI.onReady(function() {
     var debug = true;
 
     kango.browser.tabs.getCurrent(function(tab) {
-        start(tab.getUrl());
+        start(tab.getUrl(), false);
     });
 
-    function start(fullUrl) {
+    function start(fullUrl, parsed) {
         log('Starting the JS process + cleanup...');
 
         $('.tab-content').text('');
         $('.nav-tabs').text('');
         $('.current-domain').hide();
         $('.base-domain').hide();
+        $('.loader').show();
 
-        log('Current tab URL: ' + fullUrl);
+        log('Current input URL: ' + fullUrl);
 
-        getDnsRecords(getDomain(fullUrl));
+        if (parsed === true) {
+            var hostname = fullUrl;
+        } else {
+            var hostname = getDomain(fullUrl);
+        }
+
+        getDnsRecords(hostname);
     }
 
     function log(message) {
         if (debug === true) {
             kango.console.log(message);
+        }
+    }
+
+    function validIP(ipAddress)
+    {
+        var expression = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/;
+
+        if (expression.test(ipAddress)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -105,8 +123,8 @@ KangoAPI.onReady(function() {
         log('Processing record display');
         $('.loader').hide();
 
-        $('.current-domain strong').text(data.hostname);
-        $('.base-domain strong').text(data.base_domain);
+        $('.current-domain a').text(data.hostname);
+        $('.base-domain a').text(data.base_domain);
 
         $('.current-domain').show();
         if (data.hostname != data.base_domain) {
@@ -220,5 +238,9 @@ KangoAPI.onReady(function() {
     {
         return renderStringRecords('CNAME', records)
     }
+
+    $('.current-domain a, .base-domain a').on('click', function(){
+        start($(this).text(), true);
+    })
 
 });

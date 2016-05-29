@@ -23,8 +23,8 @@ body {
     margin-top: 60px;
 }
 
-h4 strong {
-    color: #2C94B3;
+.current-domain a, .base-domain a {
+    font-weight: bold;
 }
 
 .navbar {
@@ -44,7 +44,7 @@ a, a:hover, a:visited, a:link, a:active {
     text-decoration: none;
 }
 
-a {
+a, a:active, a:visited, a:link {
     color: #2C94B3;
 }
 
