@@ -11,6 +11,8 @@ KangoAPI.onReady(function() {
 
         $('.tab-content').text('');
         $('.nav-tabs').text('');
+        $('.current-domain').hide();
+        $('.base-domain').hide();
 
         log('Current tab URL: ' + fullUrl);
 
@@ -27,9 +29,9 @@ KangoAPI.onReady(function() {
         log('Sending an abort');
 
         $('.loader').hide();
-        $(".main").append('No DNS records found');
+        $(".main").append('<span class="error">No records found</span>');
 
-        throw new Error('No DNS Records Found');
+        throw new Error('No Records Found');
     }
 
     function getDomain(fullUrl) {
@@ -102,6 +104,14 @@ KangoAPI.onReady(function() {
     {
         log('Processing record display');
         $('.loader').hide();
+
+        $('.current-domain strong').text(data.hostname);
+        $('.base-domain strong').text(data.base_domain);
+
+        $('.current-domain').show();
+        if (data.hostname != data.base_domain) {
+            $('.base-domain').show();
+        }
 
         var active = 'active';
         $.each(data.dns_records, function( rrType, records ){

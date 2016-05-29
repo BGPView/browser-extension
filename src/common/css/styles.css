@@ -20,7 +20,11 @@ body {
 }
 
 .main {
-    margin-top: 80px;
+    margin-top: 60px;
+}
+
+h4 strong {
+    color: #2C94B3;
 }
 
 .navbar {
@@ -29,17 +33,12 @@ body {
     backface-visibility: hidden;
 }
 
-.nav-tabs > li, .nav-pills > li {
-    float:none;
-    display:inline-block;
-    *display:inline; /* ie7 fix */
-    zoom:1; /* hasLayout ie7 trigger */
+.records-tabbed-content {
+    margin-top: 20px;
 }
-
-.nav-tabs {
-    text-align:center;
+.records-tabbed-content ul {
+    font-weight: bold;
 }
-
 
 a, a:hover, a:visited, a:link, a:active {
     text-decoration: none;
@@ -93,3 +92,14 @@ a {
     }
 }
 /* ---------------------------- */
+
+.error {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
+    color: #880000;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: block;
+}
