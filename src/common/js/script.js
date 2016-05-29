@@ -134,20 +134,39 @@ KangoAPI.onReady(function() {
         });
     }
 
+    function renderAddresses(rrType, records)
+    {
+        log('Rendering all ' + rrType + ' records');
+
+        var html = '<table class="table table-hover"><tbody>';
+
+        $.each(records, function( key, record ){
+
+            if (record.country_code == null) {
+                record.country_code = '_unknown';
+            }
+
+            var flagImage = kango.io.getResourceUrl('res/flags/24/' + record.country_code + '.png');
+
+            html += '<tr>';
+            html +=     '<td><img src="' + flagImage + '" /></td>';
+            html +=     '<td>' + record.address + '</td>';
+            html +=     '<td>' + record.location + '</td>';
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+        $('#table-results-' + rrType).html(html);
+    }
+
     function renderA(records)
     {
-        log('Rendering all A records');
-        $.each(records, function( key, record ){
-            $('#table-results-A').append(record.address + ' ' + record.location + '<br />');
-        });
+        return renderAddresses('A', records)
     }
 
     function renderAAAA(records)
     {
-        log('Rendering all AAAA records');
-        $.each(records, function( key, record ){
-            $('#table-results-AAAA').append(record.address + ' ' + record.location + '<br />');
-        });
+        return renderAddresses('AAAA', records)
     }
 
     function renderNS(records)
