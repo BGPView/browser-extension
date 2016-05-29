@@ -23,7 +23,12 @@ KangoAPI.onReady(function() {
             var hostname = getDomain(fullUrl);
         }
 
-        getDnsRecords(hostname);
+        if (validIP(hostname)) {
+            log('hostname is an IP address');
+        } else {
+            getDnsRecords(hostname);
+        }
+
     }
 
     function log(message) {
@@ -56,7 +61,8 @@ KangoAPI.onReady(function() {
         var a = document.createElement('a');
         a.href = fullUrl;
         log('Hostname: ' + a.hostname);
-        return a.hostname;
+        // The replace is done for IPv6 HTTP hosts
+        return a.hostname.replace('[','').replace(']', '');
     }
 
     function getCahed(key)
@@ -187,13 +193,18 @@ KangoAPI.onReady(function() {
         $('#table-results-' + rrType).html(html);
     }
 
-    function renderStringRecords(rrType, records)
+    function renderStringRecords(rrType, records, makeLink)
     {
         log('Rendering all ' + rrType + ' records');
 
         var html = '<table class="table table-hover"><tbody>';
 
         $.each(records, function( key, record ){
+
+            if (makeLink === true) {
+                record = '<a class="domain" href="#">' + record + '</a>';
+            }
+
             html += '<tr>';
             html +=     '<td>' + record + '</td>';
             html += '</tr>';
@@ -201,7 +212,6 @@ KangoAPI.onReady(function() {
 
         html += '</tbody></table>';
         $('#table-results-' + rrType).html(html);
-
     }
 
     function renderA(records)
@@ -216,12 +226,12 @@ KangoAPI.onReady(function() {
 
     function renderNS(records)
     {
-        return renderStringRecords('NS', records)
+        return renderStringRecords('NS', records, true)
     }
 
     function renderMX(records)
     {
-        return renderStringRecords('MX', records)
+        return renderStringRecords('MX', records, true)
     }
 
     function renderTXT(records)
@@ -236,10 +246,10 @@ KangoAPI.onReady(function() {
 
     function renderCNAME(records)
     {
-        return renderStringRecords('CNAME', records)
+        return renderStringRecords('CNAME', records, true)
     }
 
-    $('.current-domain a, .base-domain a').on('click', function(){
+    $('body').on('click', '.current-domain a, .base-domain a, .domain', function(){
         start($(this).text(), true);
     })
 
