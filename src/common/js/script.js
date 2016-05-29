@@ -166,12 +166,35 @@ KangoAPI.onReady(function() {
         $('.current-input a').text(data.ip);
         $('.current-input').show();
 
+        if (data.maxmind.country_code == null) {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+        } else {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.maxmind.country_code + '.png');
+        }
+
         var htmlUl = '<li role="presentation" class="active"><a href="#table-results-ip-info" aria-controls="table-results-ip-info" role="tab" data-toggle="tab" aria-expanded="true">IP Info</a></li>';
-        htmlUl += '<li role="presentation"><a href="#table-results-ip-asns" aria-controls="table-results-ip-asns" role="tab" data-toggle="tab" aria-expanded="true">ASN(s)</a></li>';
+        htmlUl += '<li role="presentation"><a href="#table-results-prefixes" aria-controls="table-results-prefixes" role="tab" data-toggle="tab" aria-expanded="true">Prefix(es)</a></li>';
         $("#records-tab").html(htmlUl);
 
-        var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-ip-info">IP INFO</div>';
-        tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-ip-asns">IP ASN</div>';
+        var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-ip-info">';
+        tabbedContentHtml += '<table class="table table-hover"><tbody>';
+        tabbedContentHtml += '<tr><td>IP</td><td>' + data.ip + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" /> ' + data.maxmind.country_code + '</td></tr>';
+        tabbedContentHtml += '</tbody></table>';
+        tabbedContentHtml += '</div>';
+
+
+        tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-prefixes">';
+        tabbedContentHtml += '<table class="table table-hover"><tbody>';
+        $.each(data.prefixes, function( key, prefix ){
+            tabbedContentHtml += '<tr>';
+            tabbedContentHtml += '<td><a class="lookup-able" href="#">AS' + prefix.asn.asn + '</a></td>';
+            tabbedContentHtml += '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
+            tabbedContentHtml += '<td>' + prefix.description + '</td>';
+            tabbedContentHtml += '</tr>';
+        });
+        tabbedContentHtml += '</tbody></table>';
+        tabbedContentHtml += '</div>';
         $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
 
     }
