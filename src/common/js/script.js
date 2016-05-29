@@ -7,7 +7,11 @@ KangoAPI.onReady(function() {
     });
 
     function start(fullUrl) {
-        log('Starting the JS process...');
+        log('Starting the JS process + cleanup...');
+
+        $('.tab-content').text('');
+        $('.nav-tabs').text('');
+
         log('Current tab URL: ' + fullUrl);
 
         getDnsRecords(getDomain(fullUrl));
@@ -35,9 +39,39 @@ KangoAPI.onReady(function() {
         return a.hostname;
     }
 
+    function getCahed(key)
+    {
+        log('Checking if the key `' + key + '` is in our local cache');
+        var item = kango.storage.getItem(key);
+        var currentTime = Math.floor(Date.now() / 1000);
+
+        if (item === null || item.expire < currentTime) {
+            log('`' + key + '` NOT in local cache')
+            return false;
+        }
+
+        log('`' + key + '` IS in local cache')
+        return item;
+    }
+
+    function setCahed(key, item)
+    {
+        log('Setting`' + key + '` in our local cache');
+
+        item.expire = Math.floor(Date.now() / 1000) + 60*6*6; // 6 hours expire
+        kango.storage.setItem(key, item)
+
+        return item;
+    }
+
     function getDnsRecords(hostname) {
         var apiUrl = 'https://api.bgpview.io/dns/live/' + hostname;
         log('DNS query URL: ' + apiUrl);
+
+        var cachedRecords = getCahed(hostname);
+        if (cachedRecords !== false) {
+            return displayRecords(cachedRecords);
+        }
 
         $.ajax({
             url: apiUrl,
@@ -56,7 +90,9 @@ KangoAPI.onReady(function() {
                 }
 
                 log(data);
-                displayRecords(data.data);
+                setCahed(hostname, data.data);
+
+                return displayRecords(data.data);
             },
             timeout: 6000 // sets timeout to 6 seconds
         });
@@ -79,22 +115,18 @@ KangoAPI.onReady(function() {
             if (rrType === 'A') {
                 renderA(records);
             } else if (rrType === 'AAAA') {
-                renderAAAA()(records);
+                renderAAAA(records);
             } else if (rrType === 'NS') {
-                renderNS()(records);
+                renderNS(records);
             } else if (rrType === 'MX') {
-                renderMX()(records);
+                renderMX(records);
             } else if (rrType === 'TXT') {
-                renderTXT()(records);
+                renderTXT(records);
             } else if (rrType === 'SOA') {
-                renderSOA()(records);
+                renderSOA(records);
             } else if (rrType === 'CNAME') {
-                renderCNAME()(records);
+                renderCNAME(records);
             }
-
-            $.each(value, function( key, record ){
-                $('#table-results-' + rrType).append(record + '<br />');
-            });
 
             if (active !== '') {
                 active = ''
