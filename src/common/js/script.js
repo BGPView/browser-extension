@@ -134,7 +134,7 @@ KangoAPI.onReady(function() {
         });
     }
 
-    function renderAddresses(rrType, records)
+    function renderAddressRecords(rrType, records)
     {
         log('Rendering all ' + rrType + ' records');
 
@@ -159,39 +159,56 @@ KangoAPI.onReady(function() {
         $('#table-results-' + rrType).html(html);
     }
 
+    function renderStringRecords(rrType, records)
+    {
+        log('Rendering all ' + rrType + ' records');
+
+        var html = '<table class="table table-hover"><tbody>';
+
+        $.each(records, function( key, record ){
+            html += '<tr>';
+            html +=     '<td>' + record + '</td>';
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+        $('#table-results-' + rrType).html(html);
+
+    }
+
     function renderA(records)
     {
-        return renderAddresses('A', records)
+        return renderAddressRecords('A', records)
     }
 
     function renderAAAA(records)
     {
-        return renderAddresses('AAAA', records)
+        return renderAddressRecords('AAAA', records)
     }
 
     function renderNS(records)
     {
-        log('Rendering all NS records');
+        return renderStringRecords('NS', records)
     }
 
     function renderMX(records)
     {
-        log('Rendering all MX records');
+        return renderStringRecords('MX', records)
     }
 
     function renderTXT(records)
     {
-        log('Rendering all TXT records');
+        return renderStringRecords('TXT', records)
     }
 
     function renderSOA(records)
     {
-        log('Rendering all SOA records');
+        return renderStringRecords('SOA', records)
     }
 
     function renderCNAME(records)
     {
-        log('Rendering all CNAME records');
+        return renderStringRecords('CNAME', records)
     }
 
 });

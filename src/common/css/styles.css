@@ -29,6 +29,18 @@ body {
     backface-visibility: hidden;
 }
 
+.nav-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+    zoom:1; /* hasLayout ie7 trigger */
+}
+
+.nav-tabs {
+    text-align:center;
+}
+
+
 a, a:hover, a:visited, a:link, a:active {
     text-decoration: none;
 }
