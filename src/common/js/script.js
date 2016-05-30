@@ -172,14 +172,20 @@ KangoAPI.onReady(function() {
             var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.maxmind.country_code + '.png');
         }
 
+        if (data.ptr_record == null) {
+            data.ptr_record = '<em>None</em>';
+        }
+
         var htmlUl = '<li role="presentation" class="active"><a href="#table-results-ip-info" aria-controls="table-results-ip-info" role="tab" data-toggle="tab" aria-expanded="true">IP Info</a></li>';
         htmlUl += '<li role="presentation"><a href="#table-results-prefixes" aria-controls="table-results-prefixes" role="tab" data-toggle="tab" aria-expanded="true">Prefix(es)</a></li>';
+        htmlUl += '<li role="presentation"><a href="#table-results-rir-allocation" aria-controls="table-results-rir-allocation" role="tab" data-toggle="tab" aria-expanded="true">RIR Allocation</a></li>';
         $("#records-tab").html(htmlUl);
 
         var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-ip-info">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>IP</td><td>' + data.ip + '</td></tr>';
         tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" /> ' + data.maxmind.country_code + '</td></tr>';
+        tabbedContentHtml += '<tr><td>rDNS</td><td>' + data.ptr_record + '</td></tr>';
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
 
@@ -187,7 +193,14 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-prefixes">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         $.each(data.prefixes, function( key, prefix ){
+            if (prefix.country_code == null) {
+                var asnFlagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+            } else {
+                var asnFlagImage = kango.io.getResourceUrl('res/flags/24/' + prefix.country_code + '.png');
+            }
+
             tabbedContentHtml += '<tr>';
+            tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + prefix.country_code + '"/></td>';
             tabbedContentHtml += '<td><a class="lookup-able" href="#">AS' + prefix.asn.asn + '</a></td>';
             tabbedContentHtml += '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
             tabbedContentHtml += '<td>' + prefix.description + '</td>';
@@ -195,8 +208,61 @@ KangoAPI.onReady(function() {
         });
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
+
+        tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-rir-allocation">';
+        tabbedContentHtml += '<table class="table table-hover"><tbody>';
+        tabbedContentHtml += '<tr><td>RIR Name</td><td>' + data.rir_allocation.rir_name + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Prefix</td><td>' + data.rir_allocation.prefix + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + kango.io.getResourceUrl('res/flags/24/' + data.rir_allocation.country_code + '.png') + '" /> ' + data.rir_allocation.country_code + '</td></tr>';
+        if (data.rir_allocation.ip.indexOf('.') > -1) {
+            tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.rir_allocation.cidr) + '</td></tr>';
+        }
+        tabbedContentHtml += '<tr><td>Date Allocated</td><td>' + data.rir_allocation.date_allocated + '</td></tr>';
+        tabbedContentHtml += '</tbody></table>';
+        tabbedContentHtml += '</div>';
+
         $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
 
+    }
+
+    function getAddressCount(cidr)
+    {
+        var ipObj = {
+            1: '2,147,483,648',
+            2: '1,073,741,824',
+            3: '536,870,912',
+            4: '268,435,456',
+            5: '134,217,728',
+            6: '67,108,864',
+            7: '33,554,432',
+            8: '16,777,216',
+            9: '8,388,608',
+            10: '4,194,304',
+            11: '2,097,152',
+            12: '1,048,576',
+            13: '524,288',
+            14: '262,144',
+            15: '131,072',
+            16: '65,536',
+            17: '32,768',
+            18: '16,384',
+            19: '8,192',
+            20: '4,096',
+            21: '2,048',
+            22: '1,024',
+            23: '512',
+            24: '256',
+            25: '128',
+            26: '64',
+            27: '32',
+            28: '16',
+            29: '8',
+            30: '4',
+            31: '2',
+            32: '1'
+        };
+
+        return ipObj[cidr];
     }
 
     function displayRecords(data)
