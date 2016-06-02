@@ -240,11 +240,66 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" /> ' + data.country_codes.whois_country_code + '</td></tr>';
         tabbedContentHtml += '<tr><td>Name</td><td>' + data.name + '</td></tr>';
         tabbedContentHtml += '<tr><td>Description</td><td>' + data.description_short + '</td></tr>';
+        if (data.ip.indexOf('.') > -1) {
+            tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.cidr) + '</td></tr>';
+        }
         $.each(data.abuse_contacts, function( key, email ){
             tabbedContentHtml += '<tr><td>Abuse Contact</td><td><a href="mailto:' + email + '">' + email+ '</a></td></tr>';
         });
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
+
+        tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-asns">';
+        tabbedContentHtml += '<table class="table table-hover"><tbody>';
+        $.each(data.asns, function( key, asn ){
+            if (asn.country_code == null) {
+                var asnFlagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+            } else {
+                var asnFlagImage = kango.io.getResourceUrl('res/flags/24/' + asn.country_code + '.png');
+            }
+
+            tabbedContentHtml += '<tr>';
+            tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + asn.country_code + '"/></td>';
+            tabbedContentHtml += '<td><a class="lookup-able" href="#">AS' + asn.asn + '</a></td>';
+            tabbedContentHtml += '<td>' + asn.description + '</td>';
+            tabbedContentHtml += '</tr>';
+        });
+        tabbedContentHtml += '</tbody></table>';
+        tabbedContentHtml += '</div>';
+
+
+        tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-rir-allocation">';
+        tabbedContentHtml += '<table class="table table-hover"><tbody>';
+        tabbedContentHtml += '<tr><td>RIR Name</td><td>' + data.rir_allocation.rir_name + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Prefix</td><td><a class="lookup-able" href="#">' + data.rir_allocation.prefix + '</a></td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + kango.io.getResourceUrl('res/flags/24/' + data.rir_allocation.country_code + '.png') + '" /> ' + data.rir_allocation.country_code + '</td></tr>';
+        if (data.rir_allocation.ip.indexOf('.') > -1) {
+            tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.rir_allocation.cidr) + '</td></tr>';
+        }
+        tabbedContentHtml += '<tr><td>Date Allocated</td><td>' + data.rir_allocation.date_allocated + '</td></tr>';
+        tabbedContentHtml += '</tbody></table>';
+        tabbedContentHtml += '</div>';
+
+
+        if (data.related_prefixes.length > 0) {
+            tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-related-prefixes">';
+            tabbedContentHtml += '<table class="table table-hover"><tbody>';
+            $.each(data.related_prefixes, function (key, prefix) {
+                if (prefix.country_code == null) {
+                    var asnFlagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                } else {
+                    var asnFlagImage = kango.io.getResourceUrl('res/flags/24/' + prefix.country_code + '.png');
+                }
+
+                tabbedContentHtml += '<tr>';
+                tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + prefix.country_code + '"/></td>';
+                tabbedContentHtml += '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
+                tabbedContentHtml += '<td>' + prefix.description + '</td>';
+                tabbedContentHtml += '</tr>';
+            });
+            tabbedContentHtml += '</tbody></table>';
+            tabbedContentHtml += '</div>';
+        }
 
         $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
     }
