@@ -14,8 +14,8 @@
         "tooltipText": "BGPView",
         "popup": {
             "url": "index.html",
-            "width": 400,
-            "height": 400
+            "width": 500,
+            "height": 500
         }
     }, 
     "name": "BGPView"
