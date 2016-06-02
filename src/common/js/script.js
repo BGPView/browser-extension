@@ -174,6 +174,8 @@ KangoAPI.onReady(function() {
 
         if (data.ptr_record == null) {
             data.ptr_record = '<em>None</em>';
+        } else {
+            data.ptr_record = '<a class="lookup-able" href="#">' + data.ptr_record  + '</a>';
         }
 
         var htmlUl = '<li role="presentation" class="active"><a href="#table-results-ip-info" aria-controls="table-results-ip-info" role="tab" data-toggle="tab" aria-expanded="true">IP Info</a></li>';
@@ -212,7 +214,7 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-rir-allocation">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>RIR Name</td><td>' + data.rir_allocation.rir_name + '</td></tr>';
-        tabbedContentHtml += '<tr><td>Prefix</td><td>' + data.rir_allocation.prefix + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Prefix</td><td><a class="lookup-able" href="#">' + data.rir_allocation.prefix + '</a></td></tr>';
         tabbedContentHtml += '<tr><td>Country</td><td><img src="' + kango.io.getResourceUrl('res/flags/24/' + data.rir_allocation.country_code + '.png') + '" /> ' + data.rir_allocation.country_code + '</td></tr>';
         if (data.rir_allocation.ip.indexOf('.') > -1) {
             tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.rir_allocation.cidr) + '</td></tr>';
