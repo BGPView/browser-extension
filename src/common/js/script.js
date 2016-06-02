@@ -226,6 +226,14 @@ KangoAPI.onReady(function() {
             var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.maxmind.country_code + '.png');
         }
 
+        var htmlUl = '<li role="presentation" class="active"><a href="#table-results-prefix" aria-controls="table-results-prefix" role="tab" data-toggle="tab" aria-expanded="true">Prefix</a></li>';
+        htmlUl += '<li role="presentation"><a href="#table-results-asns" aria-controls="table-results-asns" role="tab" data-toggle="tab" aria-expanded="true">ASN(s)</a></li>';
+        htmlUl += '<li role="presentation"><a href="#table-results-rir-allocation" aria-controls="table-results-rir-allocation" role="tab" data-toggle="tab" aria-expanded="true">RIR Allocation</a></li>';
+        if (data.related_prefixes.length > 0) {
+            htmlUl += '<li role="presentation"><a href="#table-results-related-prefixes" aria-controls="table-results-related-prefixes" role="tab" data-toggle="tab" aria-expanded="true">Related Prefixes</a></li>';
+        }
+        $("#records-tab").html(htmlUl);
+
     }
 
     function displayIpInfo(data)
