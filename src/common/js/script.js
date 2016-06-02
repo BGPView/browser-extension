@@ -377,7 +377,41 @@ KangoAPI.onReady(function() {
 
     function renderTXT(records)
     {
-        return renderStringRecords('TXT', records)
+        log('Rendering all TXT records');
+
+        var html = '<table class="table table-hover"><tbody>';
+
+        $.each(records, function( key, record ){
+
+            // Check if record is SPF
+            if (record.toLowerCase().lastIndexOf('v=spf1', 0) === 0) {
+                var spfParts = record.split(' ');
+                // Loop through all the SPF parts to replace IPs and domains
+                $.each(spfParts, function( key, value ){
+                    value = value.toLocaleLowerCase();
+
+                    if (value.lastIndexOf('ip4:', 0) === 0) {
+                        var parts = value.split('ip4:');
+                        spfParts[key] = 'ip4:' + '<a class="lookup-able" href="#">' + parts[1] + '</a>';
+                    } else if (value.lastIndexOf('ip6:', 0) === 0) {
+                        var parts = value.split('ip6:');
+                        spfParts[key] = 'ip6:' + '<a class="lookup-able" href="#">' + parts[1] + '</a>';
+                    } else if (value.lastIndexOf('include:', 0) === 0) {
+                        var parts = value.split('include:');
+                        spfParts[key] = 'include:' + '<a class="lookup-able" href="#">' + parts[1] + '</a>';
+                    }
+                });
+
+                record = spfParts.join(' ');
+            }
+
+            html += '<tr>';
+            html +=     '<td>' + record + '</td>';
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+        $('#table-results-TXT').html(html);
     }
 
     function renderSOA(records)
