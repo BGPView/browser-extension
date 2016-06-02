@@ -220,10 +220,10 @@ KangoAPI.onReady(function() {
         $('.current-input a').text(data.prefix);
         $('.current-input').show();
 
-        if (data.maxmind.country_code == null) {
+        if (data.country_codes.whois_country_code == null) {
             var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
         } else {
-            var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.maxmind.country_code + '.png');
+            var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.country_codes.whois_country_code + '.png');
         }
 
         var htmlUl = '<li role="presentation" class="active"><a href="#table-results-prefix" aria-controls="table-results-prefix" role="tab" data-toggle="tab" aria-expanded="true">Prefix</a></li>';
@@ -234,6 +234,19 @@ KangoAPI.onReady(function() {
         }
         $("#records-tab").html(htmlUl);
 
+        var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-prefix">';
+        tabbedContentHtml += '<table class="table table-hover"><tbody>';
+        tabbedContentHtml += '<tr><td>Prefix</td><td>' + data.prefix + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" /> ' + data.country_codes.whois_country_code + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Name</td><td>' + data.name + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Description</td><td>' + data.description_short + '</td></tr>';
+        $.each(data.abuse_contacts, function( key, email ){
+            tabbedContentHtml += '<tr><td>Abuse Contact</td><td><a href="mailto:' + email + '">' + email+ '</a></td></tr>';
+        });
+        tabbedContentHtml += '</tbody></table>';
+        tabbedContentHtml += '</div>';
+
+        $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
     }
 
     function displayIpInfo(data)
