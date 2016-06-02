@@ -30,6 +30,9 @@ KangoAPI.onReady(function() {
         } else if (validPrefix(hostname)) {
             log('hostname is a prefix');
             getPrefixInfo(hostname);
+        } else if (validAsn(hostname)) {
+            log('hostname is a ASN');
+            getAsnInfo(hostname);
         } else {
             log('hostname is a domain');
             getDnsRecords(hostname);
@@ -52,6 +55,17 @@ KangoAPI.onReady(function() {
         } else {
             return false;
         }
+    }
+
+    function validAsn(asn)
+    {
+        var asn = asn.toLowerCase().replace('as', '');
+
+        if (asn % 1 !== 0) {
+            return false;
+        }
+
+        return true;
     }
 
     function validPrefix(prefix)
@@ -148,6 +162,42 @@ KangoAPI.onReady(function() {
         });
     }
 
+    function getAsnInfo(asn)
+    {
+        asn = asn.toLocaleLowerCase().replace('as', '');
+
+        var apiUrl = 'https://api.bgpview.io/asn/' + asn + '?source=browser_extension';
+        apiUrl += '&with_ixs=true&with_peers=true&with_prefixes=true&with_upstreams=true&with_downstreams=true';
+
+        log('IP query URL: ' + apiUrl);
+
+        var cachedInfo = getCahed(asn);
+        if (cachedInfo !== false) {
+            return displayAsnInfo(cachedInfo);
+        }
+
+        $.ajax({
+            url: apiUrl,
+            dataType: "json",
+            error: function(xhr){
+                log('API Call errored: ' + xhr.responseText)
+                return abort();
+            },
+            success: function(data){
+                if (data.status == 'error') {
+                    log('API Call errored: ' + data.status_message)
+                    return abort();
+                }
+
+                log(data);
+                setCahed(asn, data.data);
+
+                return displayAsnInfo(data.data);
+            },
+            timeout: 6000 // sets timeout to 6 seconds
+        });
+    }
+
     function getAdressInfo(ipAddress)
     {
         var apiUrl = 'https://api.bgpview.io/ip/' + ipAddress + '?source=browser_extension';
@@ -210,6 +260,28 @@ KangoAPI.onReady(function() {
             },
             timeout: 6000 // sets timeout to 6 seconds
         });
+    }
+
+    function displayAsnInfo(data)
+    {
+        log('Processing ASN info display');
+        $('.loader').hide();
+
+        $('.current-input a').text('AS' + data.asn);
+        $('.current-input').show();
+
+        if (data.whois_country_code == null) {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+        } else {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.whois_country_code + '.png');
+        }
+
+        var htmlUl = '<li role="presentation" class="active"><a href="#table-results-asn" aria-controls="table-results-asn" role="tab" data-toggle="tab" aria-expanded="true">ASN</a></li>';
+
+        // TO-DO: Figure out a way to display all tabs in a nice manner
+
+        $("#records-tab").html(htmlUl);
+
     }
 
     function displayPrefixInfo(data)
