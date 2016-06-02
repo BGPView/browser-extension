@@ -27,7 +27,11 @@ KangoAPI.onReady(function() {
         if (validIP(hostname)) {
             log('hostname is an IP address');
             getAdressInfo(hostname);
+        } else if (validPrefix(hostname)) {
+            log('hostname is a prefix');
+            getPrefixInfo(hostname);
         } else {
+            log('hostname is a domain');
             getDnsRecords(hostname);
         }
 
@@ -48,6 +52,24 @@ KangoAPI.onReady(function() {
         } else {
             return false;
         }
+    }
+
+    function validPrefix(prefix)
+    {
+        var parts = prefix.split('/');
+
+        // Need to have only 2 parts
+        if (parts.length !== 2) {
+            return false;
+        }
+
+        // Second part must be an a number
+        if (parts[1] % 1 !== 0) {
+            return false;
+        }
+
+        // Check first part is a valid IP
+        return validIP(parts[0]);
     }
 
     function abort() {
