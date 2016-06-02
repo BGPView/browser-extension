@@ -115,7 +115,7 @@ KangoAPI.onReady(function() {
     }
 
     function getDnsRecords(hostname) {
-        var apiUrl = 'https://api.bgpview.io/dns/live/' + hostname;
+        var apiUrl = 'https://api.bgpview.io/dns/live/' + hostname + '?source=browser_extension';
         log('DNS query URL: ' + apiUrl);
 
         var cachedRecords = getCahed(hostname);
@@ -150,7 +150,7 @@ KangoAPI.onReady(function() {
 
     function getAdressInfo(ipAddress)
     {
-        var apiUrl = 'https://api.bgpview.io/ip/' + ipAddress;
+        var apiUrl = 'https://api.bgpview.io/ip/' + ipAddress + '?source=browser_extension';
         log('IP query URL: ' + apiUrl);
 
         var cachedInfo = getCahed(ipAddress);
@@ -178,6 +178,54 @@ KangoAPI.onReady(function() {
             },
             timeout: 6000 // sets timeout to 6 seconds
         });
+    }
+
+    function getPrefixInfo(prefix)
+    {
+        var apiUrl = 'https://api.bgpview.io/prefix/' + prefix + '?source=browser_extension';
+        log('Prefix query URL: ' + apiUrl);
+
+        var cachedInfo = getCahed(prefix);
+        if (cachedInfo !== false) {
+            return displayPrefixInfo(cachedInfo);
+        }
+
+        $.ajax({
+            url: apiUrl,
+            dataType: "json",
+            error: function(xhr){
+                log('API Call errored: ' + xhr.responseText)
+                return abort();
+            },
+            success: function(data){
+                if (data.status == 'error') {
+                    log('API Call errored: ' + data.status_message)
+                    return abort();
+                }
+
+                log(data);
+                setCahed(prefix, data.data);
+
+                return displayPrefixInfo(data.data);
+            },
+            timeout: 6000 // sets timeout to 6 seconds
+        });
+    }
+
+    function displayPrefixInfo(data)
+    {
+        log('Processing prefix info display');
+        $('.loader').hide();
+
+        $('.current-input a').text(data.prefix);
+        $('.current-input').show();
+
+        if (data.maxmind.country_code == null) {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+        } else {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.maxmind.country_code + '.png');
+        }
+
     }
 
     function displayIpInfo(data)
