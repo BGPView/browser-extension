@@ -387,7 +387,7 @@ KangoAPI.onReady(function() {
             tabbedContentHtml += '</div>';
         }
 
-        // peers
+        // Peers
         if (data.peers.ipv4_peers.length > 0 || data.peers.ipv6_peers.length > 0) {
             tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-peers">';
             tabbedContentHtml +=    '<ul class="nav nav-tabs" role="tablist" id="records-tab">';
@@ -439,6 +439,68 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>' + peer.description + '</td>';
+                    tabbedContentHtml += '</tr>';
+                });
+                tabbedContentHtml +=    '</tbody></table>';
+                tabbedContentHtml += '</div>';
+                active = '';
+            }
+            tabbedContentHtml +=    '</div>';
+            tabbedContentHtml += '</div>';
+        }
+
+        // Upstreams
+        if (data.upstreams.ipv4_upstreams.length > 0 || data.upstreams.ipv6_upstreams.length > 0) {
+            tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-upstreams">';
+            tabbedContentHtml +=    '<ul class="nav nav-tabs" role="tablist" id="records-tab">';
+
+            var active = 'class="active"';
+            if (data.upstreams.ipv4_upstreams.length > 0) {
+                tabbedContentHtml +=        '<li role="presentation" ' + active + '><a href="#table-upstreams-ipv4" aria-controls="table-upstreams-ipv4" role="tab" data-toggle="tab" aria-expanded="true">IPv4 Upstreams</a></li>';
+                active = '';
+            }
+            if (data.upstreams.ipv6_upstreams.length > 0) {
+                tabbedContentHtml +=        '<li role="presentation" ' + active + '><a href="#table-upstreams-ipv6" aria-controls="table-upstreams-ipv6" role="tab" data-toggle="tab" aria-expanded="true">IPv6 Upstreams</a></li>';
+                active = '';
+            }
+            tabbedContentHtml +=    '</ul>';
+            tabbedContentHtml +=    '<div class="tab-content">';
+
+            var active = 'active';
+            if (data.upstreams.ipv4_upstreams.length > 0) {
+                tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-upstreams-ipv4">';
+                tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
+                $.each(data.upstreams.ipv4_upstreams, function( key, upstream ){
+                    if (upstream.country_code == null) {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                    } else {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/' + upstream.country_code + '.png');
+                    }
+
+                    tabbedContentHtml += '<tr>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + upstream.asn + '</a></td>';
+                    tabbedContentHtml +=     '<td>' + upstream.description + '</td>';
+                    tabbedContentHtml += '</tr>';
+                });
+                tabbedContentHtml +=    '</tbody></table>';
+                tabbedContentHtml += '</div>';
+                active = '';
+            }
+            if (data.upstreams.ipv6_upstreams.length > 0) {
+                tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-upstreams-ipv6">';
+                tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
+                $.each(data.upstreams.ipv6_upstreams, function( key, upstream ){
+                    if (upstream.country_code == null) {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                    } else {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/' + upstream.country_code + '.png');
+                    }
+
+                    tabbedContentHtml += '<tr>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + upstream.asn + '</a></td>';
+                    tabbedContentHtml +=     '<td>' + upstream.description + '</td>';
                     tabbedContentHtml += '</tr>';
                 });
                 tabbedContentHtml +=    '</tbody></table>';
