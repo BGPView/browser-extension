@@ -278,7 +278,22 @@ KangoAPI.onReady(function() {
 
         var htmlUl = '<li role="presentation" class="active"><a href="#table-results-asn" aria-controls="table-results-asn" role="tab" data-toggle="tab" aria-expanded="true">ASN</a></li>';
 
-        // TO-DO: Figure out a way to display all tabs in a nice manner
+        if (data.prefixes.ipv4_prefixes.length > 0 || data.prefixes.ipv6_prefixes.length > 0) {
+            htmlUl += '<li role="presentation"><a href="#table-results-prefixes" aria-controls="table-results-prefixes" role="tab" data-toggle="tab" aria-expanded="true">Prefixes</a></li>';
+        }
+        if (data.peers.ipv4_peers.length > 0 || data.peers.ipv6_peers.length > 0) {
+            htmlUl += '<li role="presentation"><a href="#table-results-peers" aria-controls="table-results-peers" role="tab" data-toggle="tab" aria-expanded="true">Peers</a></li>';
+        }
+        if (data.upstreams.ipv4_upstreams.length > 0 || data.upstreams.ipv6_upstreams.length > 0) {
+            htmlUl += '<li role="presentation"><a href="#table-results-upstreams" aria-controls="table-results-upstreams" role="tab" data-toggle="tab" aria-expanded="true">Upstreams</a></li>';
+        }
+        if (data.downstreams.ipv4_downstreams.length > 0 || data.downstreams.ipv6_downstreams.length > 0) {
+            htmlUl += '<li role="presentation"><a href="#table-results-downstreams" aria-controls="table-results-downstreams" role="tab" data-toggle="tab" aria-expanded="true">Downstreams</a></li>';
+        }
+        if (data.internet_exchanges.length > 0 || data.internet_exchanges.length > 0) {
+            htmlUl += '<li role="presentation"><a href="#table-results-ix" aria-controls="table-results-ix" role="tab" data-toggle="tab" aria-expanded="true">IX</a></li>';
+        }
+
 
         $("#records-tab").html(htmlUl);
 
