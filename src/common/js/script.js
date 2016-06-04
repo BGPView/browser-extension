@@ -294,9 +294,40 @@ KangoAPI.onReady(function() {
             htmlUl += '<li role="presentation"><a href="#table-results-ix" aria-controls="table-results-ix" role="tab" data-toggle="tab" aria-expanded="true">IX</a></li>';
         }
 
-
         $("#records-tab").html(htmlUl);
 
+
+        // ASN INFO
+        if (data.country_code == null) {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+        } else {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.country_code + '.png');
+        }
+        var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-asn">';
+        tabbedContentHtml += '<table class="table table-hover"><tbody>';
+        tabbedContentHtml += '<tr><td>ASN</td><td>AS' + data.asn + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" /> ' + data.country_code + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Name</td><td>' + data.name + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Description</td><td><a href="#" class="new-tab">' + data.description_short + '</a></td></tr>';
+        $.each(data.abuse_contacts, function( key, email ){
+            tabbedContentHtml += '<tr><td>Abuse Contact</td><td><a href="mailto:' + email + '">' + email+ '</a></td></tr>';
+        });
+        if (data.looking_glass != null) {
+            tabbedContentHtml += '<tr><td>Looking Glass</td><td><a href="#" class="new-tab">' + data.looking_glass + '</a></td></tr>';
+        }
+        if (data.traffic_estimation != null) {
+            tabbedContentHtml += '<tr><td>Traffic Estimation</td><td>' + data.traffic_estimation + '</td></tr>';
+        }
+        if (data.traffic_ratio != null) {
+            tabbedContentHtml += '<tr><td>Traffic Ratio</td><td>' + data.traffic_ratio + '</td></tr>';
+        }
+        tabbedContentHtml += '</tbody></table>';
+        tabbedContentHtml += '</div>';
+
+
+
+
+        $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
     }
 
     function displayPrefixInfo(data)
@@ -661,6 +692,12 @@ KangoAPI.onReady(function() {
 
     $('body').on('click', '.lookup-able', function(){
         start($(this).text(), true);
-    })
+    });
+
+    $('body').on('click', '.new-tab', function(){
+        kango.browser.tabs.create({url:'http://www.google.com/search?hl=en&q=' + $(this).text().replace(' ', '+') + '&btnI=745'});
+    });
+
+
 
 });
