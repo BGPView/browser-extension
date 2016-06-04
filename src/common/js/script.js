@@ -363,7 +363,6 @@ KangoAPI.onReady(function() {
                 tabbedContentHtml += '</div>';
                 active = '';
             }
-
             if (data.prefixes.ipv6_prefixes.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-prefixes-ipv6">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
@@ -388,7 +387,69 @@ KangoAPI.onReady(function() {
             tabbedContentHtml += '</div>';
         }
 
-        
+        // peers
+        if (data.peers.ipv4_peers.length > 0 || data.peers.ipv6_peers.length > 0) {
+            tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-peers">';
+            tabbedContentHtml +=    '<ul class="nav nav-tabs" role="tablist" id="records-tab">';
+
+            var active = 'class="active"';
+            if (data.peers.ipv4_peers.length > 0) {
+                tabbedContentHtml +=        '<li role="presentation" ' + active + '><a href="#table-peers-ipv4" aria-controls="table-peers-ipv4" role="tab" data-toggle="tab" aria-expanded="true">IPv4 Peers</a></li>';
+                active = '';
+            }
+            if (data.peers.ipv6_peers.length > 0) {
+                tabbedContentHtml +=        '<li role="presentation" ' + active + '><a href="#table-peers-ipv6" aria-controls="table-peers-ipv6" role="tab" data-toggle="tab" aria-expanded="true">IPv6 Peers</a></li>';
+                active = '';
+            }
+            tabbedContentHtml +=    '</ul>';
+            tabbedContentHtml +=    '<div class="tab-content">';
+
+            var active = 'active';
+            if (data.peers.ipv4_peers.length > 0) {
+                tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-peers-ipv4">';
+                tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
+                $.each(data.peers.ipv4_peers, function( key, peer ){
+                    if (peer.country_code == null) {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                    } else {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/' + peer.country_code + '.png');
+                    }
+
+                    tabbedContentHtml += '<tr>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
+                    tabbedContentHtml +=     '<td>' + peer.description + '</td>';
+                    tabbedContentHtml += '</tr>';
+                });
+                tabbedContentHtml +=    '</tbody></table>';
+                tabbedContentHtml += '</div>';
+                active = '';
+            }
+            if (data.peers.ipv6_peers.length > 0) {
+                tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-peers-ipv6">';
+                tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
+                $.each(data.peers.ipv6_peers, function( key, peer ){
+                    if (peer.country_code == null) {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                    } else {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/' + peer.country_code + '.png');
+                    }
+
+                    tabbedContentHtml += '<tr>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
+                    tabbedContentHtml +=     '<td>' + peer.description + '</td>';
+                    tabbedContentHtml += '</tr>';
+                });
+                tabbedContentHtml +=    '</tbody></table>';
+                tabbedContentHtml += '</div>';
+                active = '';
+            }
+            tabbedContentHtml +=    '</div>';
+            tabbedContentHtml += '</div>';
+        }
+
+
 
         $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
     }
