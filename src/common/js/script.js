@@ -325,7 +325,70 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '</div>';
 
 
+        // Prefixes
+        if (data.prefixes.ipv4_prefixes.length > 0 || data.prefixes.ipv6_prefixes.length > 0) {
+            tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-prefixes">';
+            tabbedContentHtml +=    '<ul class="nav nav-tabs" role="tablist" id="records-tab">';
 
+            var active = 'class="active"';
+            if (data.prefixes.ipv4_prefixes.length > 0) {
+                tabbedContentHtml +=        '<li role="presentation" ' + active + '><a href="#table-prefixes-ipv4" aria-controls="table-prefixes-ipv4" role="tab" data-toggle="tab" aria-expanded="true">IPv4 Prefixes</a></li>';
+                active = '';
+            }
+            if (data.prefixes.ipv6_prefixes.length > 0) {
+                tabbedContentHtml +=        '<li role="presentation" ' + active + '><a href="#table-prefixes-ipv6" aria-controls="table-prefixes-ipv6" role="tab" data-toggle="tab" aria-expanded="true">IPv6 Prefixes</a></li>';
+                active = '';
+            }
+            tabbedContentHtml +=    '</ul>';
+            tabbedContentHtml +=    '<div class="tab-content">';
+
+            var active = 'active';
+            if (data.prefixes.ipv4_prefixes.length > 0) {
+                tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-prefixes-ipv4">';
+                tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
+                $.each(data.prefixes.ipv4_prefixes, function( key, prefix ){
+                    if (prefix.country_code == null) {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                    } else {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/' + prefix.country_code + '.png');
+                    }
+
+                    tabbedContentHtml += '<tr>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
+                    tabbedContentHtml +=     '<td>' + prefix.description + '</td>';
+                    tabbedContentHtml += '</tr>';
+                });
+                tabbedContentHtml +=    '</tbody></table>';
+                tabbedContentHtml += '</div>';
+                active = '';
+            }
+
+            if (data.prefixes.ipv6_prefixes.length > 0) {
+                tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-prefixes-ipv6">';
+                tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
+                $.each(data.prefixes.ipv6_prefixes, function( key, prefix ){
+                    if (prefix.country_code == null) {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                    } else {
+                        var flagImage = kango.io.getResourceUrl('res/flags/24/' + prefix.country_code + '.png');
+                    }
+
+                    tabbedContentHtml += '<tr>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
+                    tabbedContentHtml +=     '<td>' + prefix.description + '</td>';
+                    tabbedContentHtml += '</tr>';
+                });
+                tabbedContentHtml +=    '</tbody></table>';
+                tabbedContentHtml += '</div>';
+                active = '';
+            }
+            tabbedContentHtml +=    '</div>';
+            tabbedContentHtml += '</div>';
+        }
+
+        
 
         $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
     }
