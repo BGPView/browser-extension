@@ -151,7 +151,7 @@ KangoAPI.onReady(function() {
         var item = kango.storage.getItem(key);
         var currentTime = Math.floor(Date.now() / 1000);
 
-        if (item === null || item.expire < currentTime) {
+        if (item == null || item.expire < currentTime) {
             log('`' + key + '` NOT in local cache')
             return false;
         }
@@ -748,7 +748,7 @@ KangoAPI.onReady(function() {
             }
 
             tabbedContentHtml += '<tr>';
-            tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + asn.country_code + '"/></td>';
+            tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + country(asn.country_code) + '"/></td>';
             tabbedContentHtml += '<td><a class="lookup-able" href="#">AS' + asn.asn + '</a></td>';
             tabbedContentHtml += '<td>' + asn.description + '</td>';
             tabbedContentHtml += '</tr>';

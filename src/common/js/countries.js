@@ -1,5 +1,7 @@
 function country(iso) {
-    iso = iso.toUpperCase();
+    if (typeof iso === 'string') {
+        iso = iso.toUpperCase();
+    }
 
     var countryList = {
         'AD': 'Andorra',
