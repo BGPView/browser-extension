@@ -103,3 +103,10 @@ a, a:active, a:visited, a:link {
     margin-bottom: 20px;
     display: block;
 }
+
+.support-other-proto {
+    color: #2ca02c;
+    float: right;
+    margin-right: 15px;
+    font-weight: bold;
+}
