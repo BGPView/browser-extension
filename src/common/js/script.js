@@ -1,12 +1,13 @@
 KangoAPI.onReady(function() {
 
     var debug = true;
+    var dataHistory = [];
 
     kango.browser.tabs.getCurrent(function(tab) {
         start(tab.getUrl(), false);
     });
 
-    function start(fullUrl, parsed) {
+    function start(fullUrl, parsed, skipHistroySave) {
         log('Starting the JS process + cleanup...');
 
         $('.tab-content').text('');
@@ -23,6 +24,11 @@ KangoAPI.onReady(function() {
             var hostname = fullUrl;
         } else {
             var hostname = getDomain(fullUrl);
+        }
+
+        // Add item to history array
+        if (skipHistroySave !== true) {
+            dataHistory.push(hostname);
         }
 
         if (validIP(hostname)) {
@@ -87,6 +93,18 @@ KangoAPI.onReady(function() {
         return validIP(parts[0]);
     }
 
+    function postLoadIconDisplay()
+    {
+        $('.loader').hide();
+
+        // Hide back button when there is no history
+        if (dataHistory.length > 1) {
+            $('.back-btn').show();
+        } else {
+            $('.back-btn').hide();
+        }
+    }
+
     function humanFileSize(bits) {
         var thresh = 1000;
         if(Math.abs(bits) < thresh) {
@@ -104,7 +122,7 @@ KangoAPI.onReady(function() {
     function abort() {
         log('Sending an abort');
 
-        $('.loader').hide();
+        postLoadIconDisplay();
         $(".main").append('<span class="error">No records found</span>');
 
         throw new Error('No Records Found');
@@ -280,7 +298,7 @@ KangoAPI.onReady(function() {
     function displayAsnInfo(data)
     {
         log('Processing ASN info display');
-        $('.loader').hide();
+        postLoadIconDisplay();
 
         $('.current-input a').text('AS' + data.asn);
         $('.current-input').show();
@@ -676,7 +694,7 @@ KangoAPI.onReady(function() {
     function displayPrefixInfo(data)
     {
         log('Processing prefix info display');
-        $('.loader').hide();
+        postLoadIconDisplay();
 
         $('.current-input a').text(data.prefix);
         $('.current-input').show();
@@ -769,7 +787,7 @@ KangoAPI.onReady(function() {
     function displayIpInfo(data)
     {
         log('Processing IP info display');
-        $('.loader').hide();
+        postLoadIconDisplay();
 
         $('.current-input a').text(data.ip);
         $('.current-input').show();
@@ -879,7 +897,7 @@ KangoAPI.onReady(function() {
     function displayRecords(data)
     {
         log('Processing record display');
-        $('.loader').hide();
+        postLoadIconDisplay();
 
         $('.current-input a').text(data.hostname);
         $('.base-domain a').text(data.base_domain);
@@ -1037,6 +1055,11 @@ KangoAPI.onReady(function() {
 
     $('body').on('click', '.lookup-able', function(){
         start($(this).text(), true);
+    });
+
+    $('body').on('click', '.back-btn', function(){
+        dataHistory.pop();
+        start(dataHistory[dataHistory.length - 1], true, true);
     });
 
     $('body').on('click', '.new-tab', function(){
