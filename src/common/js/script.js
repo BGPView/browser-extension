@@ -398,7 +398,7 @@ KangoAPI.onReady(function() {
 
                     tabbedContentHtml += '<tr>';
                     tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(prefix.country_code)  + '" /></td>';
-                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">' + country(prefix.prefix) + '</a></td>';
+                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
                     tabbedContentHtml +=     '<td>' + prefix.description + '</td>';
                     tabbedContentHtml += '</tr>';
                 });
