@@ -16,6 +16,7 @@ KangoAPI.onReady(function() {
         $('.current-input').hide();
         $('.base-domain').hide();
         $('.more-info').hide();
+        $('.back-btn').hide();
         $('.loader').show();
 
         log('Current input URL: ' + fullUrl);
