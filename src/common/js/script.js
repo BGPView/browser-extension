@@ -54,6 +54,14 @@ KangoAPI.onReady(function() {
         }
     }
 
+    function displayDate(date)
+    {
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        var dateObj = new Date(date);
+
+        return dateObj.getDate() + ' ' + months[dateObj.getMonth()] + ' ' + dateObj.getFullYear();
+    }
+
     function validIP(ipAddress)
     {
         var expression = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/;
@@ -757,7 +765,7 @@ KangoAPI.onReady(function() {
         if (data.rir_allocation.ip.indexOf('.') > -1) {
             tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.rir_allocation.cidr) + '</td></tr>';
         }
-        tabbedContentHtml += '<tr><td>Date Allocated</td><td>' + data.rir_allocation.date_allocated + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Date Allocated</td><td>' + displayDate(data.rir_allocation.date_allocated) + '</td></tr>';
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
 
@@ -847,7 +855,7 @@ KangoAPI.onReady(function() {
         if (data.rir_allocation.ip.indexOf('.') > -1) {
             tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.rir_allocation.cidr) + '</td></tr>';
         }
-        tabbedContentHtml += '<tr><td>Date Allocated</td><td>' + data.rir_allocation.date_allocated + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Date Allocated</td><td>' + displayDate(data.rir_allocation.date_allocated) + '</td></tr>';
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
 
