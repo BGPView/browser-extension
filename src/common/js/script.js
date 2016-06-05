@@ -86,6 +86,20 @@ KangoAPI.onReady(function() {
         return validIP(parts[0]);
     }
 
+    function humanFileSize(bits) {
+        var thresh = 1000;
+        if(Math.abs(bits) < thresh) {
+            return bits + ' Mbps';
+        }
+        var units = ['Gbps','Tbps','Pbps','Ebps'];
+        var u = -1;
+        do {
+            bits /= thresh;
+            ++u;
+        } while(Math.abs(bits) >= thresh && u < units.length - 1);
+        return Math.floor(bits.toFixed(1)) +' '+units[u];
+    }
+
     function abort() {
         log('Sending an abort');
 
