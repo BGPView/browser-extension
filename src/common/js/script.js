@@ -432,7 +432,15 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml += '<tr>';
                     tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
-                    tabbedContentHtml +=     '<td>' + peer.description + '</td>';
+                    tabbedContentHtml +=     '<td>';
+                    tabbedContentHtml +=        '<a class="new-tab" href="#">' + peer.description + '</a>';
+                    $.each(data.peers.ipv6_peers, function( key, v6peer ){
+                        if (v6peer.asn == peer.asn) {
+                            tabbedContentHtml += '<span class="support-other-proto">v6</span>';
+                            return false;
+                        }
+                    });
+                    tabbedContentHtml +=     '</td>';
                     tabbedContentHtml += '</tr>';
                 });
                 tabbedContentHtml +=    '</tbody></table>';
@@ -452,7 +460,15 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml += '<tr>';
                     tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
-                    tabbedContentHtml +=     '<td>' + peer.description + '</td>';
+                    tabbedContentHtml +=     '<td>';
+                    tabbedContentHtml +=        '<a class="new-tab" href="#">' + peer.description + '</a>';
+                    $.each(data.peers.ipv4_peers, function( key, v4peer ){
+                        if (v4peer.asn == peer.asn) {
+                            tabbedContentHtml += '<span class="support-other-proto">v4</span>';
+                            return false;
+                        }
+                    });
+                    tabbedContentHtml +=     '</td>';
                     tabbedContentHtml += '</tr>';
                 });
                 tabbedContentHtml +=    '</tbody></table>';
@@ -494,7 +510,15 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml += '<tr>';
                     tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + upstream.asn + '</a></td>';
-                    tabbedContentHtml +=     '<td>' + upstream.description + '</td>';
+                    tabbedContentHtml +=     '<td>';
+                    tabbedContentHtml +=        '<a class="new-tab" href="#">' + upstream.description + '</a>';
+                    $.each(data.upstreams.ipv6_upstreams, function( key, v6upstream ){
+                        if (v6upstream.asn == upstream.asn) {
+                            tabbedContentHtml += '<span class="support-other-proto">v6</span>';
+                            return false;
+                        }
+                    });
+                    tabbedContentHtml +=     '</td>';
                     tabbedContentHtml += '</tr>';
                 });
                 tabbedContentHtml +=    '</tbody></table>';
@@ -514,7 +538,15 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml += '<tr>';
                     tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + upstream.asn + '</a></td>';
-                    tabbedContentHtml +=     '<td>' + upstream.description + '</td>';
+                    tabbedContentHtml +=     '<td>';
+                    tabbedContentHtml +=        '<a class="new-tab" href="#">' + upstream.description + '</a>';
+                    $.each(data.upstreams.ipv4_upstreams, function( key, v4upstream ){
+                        if (v4upstream.asn == upstream.asn) {
+                            tabbedContentHtml += '<span class="support-other-proto">v4</span>';
+                            return false;
+                        }
+                    });
+                    tabbedContentHtml +=     '</td>';
                     tabbedContentHtml += '</tr>';
                 });
                 tabbedContentHtml +=    '</tbody></table>';
@@ -556,7 +588,15 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml += '<tr>';
                     tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + downstream.asn + '</a></td>';
-                    tabbedContentHtml +=     '<td>' + downstream.description + '</td>';
+                    tabbedContentHtml +=     '<td>';
+                    tabbedContentHtml +=        '<a class="new-tab" href="#">' + downstream.description + '</a>';
+                    $.each(data.downstreams.ipv6_downstreams, function( key, v6downstream ){
+                        if (v6downstream.asn == downstream.asn) {
+                            tabbedContentHtml += '<span class="support-other-proto">v6</span>';
+                            return false;
+                        }
+                    });
+                    tabbedContentHtml +=     '</td>';
                     tabbedContentHtml += '</tr>';
                 });
                 tabbedContentHtml +=    '</tbody></table>';
@@ -576,7 +616,15 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml += '<tr>';
                     tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + downstream.asn + '</a></td>';
-                    tabbedContentHtml +=     '<td>' + downstream.description + '</td>';
+                    tabbedContentHtml +=     '<td>';
+                    tabbedContentHtml +=        '<a class="new-tab" href="#">' + downstream.description + '</a>';
+                    $.each(data.downstreams.ipv4_downstreams, function( key, v4downstream ){
+                        if (v4downstream.asn == downstream.asn) {
+                            tabbedContentHtml += '<span class="support-other-proto">v4</span>';
+                            return false;
+                        }
+                    });
+                    tabbedContentHtml +=     '</td>';
                     tabbedContentHtml += '</tr>';
                 });
                 tabbedContentHtml +=    '</tbody></table>';
