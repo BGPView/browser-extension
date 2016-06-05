@@ -14,6 +14,7 @@ KangoAPI.onReady(function() {
         $("#records-tab").text('');
         $('.current-input').hide();
         $('.base-domain').hide();
+        $('.more-info').hide();
         $('.loader').show();
 
         log('Current input URL: ' + fullUrl);
@@ -283,6 +284,7 @@ KangoAPI.onReady(function() {
 
         $('.current-input a').text('AS' + data.asn);
         $('.current-input').show();
+        $('.more-info').show();
 
         if (data.whois_country_code == null) {
             var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
@@ -678,6 +680,7 @@ KangoAPI.onReady(function() {
 
         $('.current-input a').text(data.prefix);
         $('.current-input').show();
+        $('.more-info').show();
 
         if (data.country_codes.whois_country_code == null) {
             var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
@@ -770,6 +773,7 @@ KangoAPI.onReady(function() {
 
         $('.current-input a').text(data.ip);
         $('.current-input').show();
+        $('.more-info').show();
 
         if (data.maxmind.country_code == null) {
             var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
@@ -1039,6 +1043,8 @@ KangoAPI.onReady(function() {
         kango.browser.tabs.create({url:'http://www.google.com/search?hl=en&q=' + $(this).text().replace(' ', '+') + '&btnI=745'});
     });
 
-
+    $('body').on('click', '.more-info', function(){
+        kango.browser.tabs.create({url:'https://bgpview.io/search/redirect/' + $('.current-input a').text()});
+    });
 
 });

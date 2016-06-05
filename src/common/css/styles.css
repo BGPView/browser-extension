@@ -110,3 +110,7 @@ a, a:active, a:visited, a:link {
     margin-right: 15px;
     font-weight: bold;
 }
+
+.more-info {
+    float: right;
+}
