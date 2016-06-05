@@ -349,7 +349,7 @@ KangoAPI.onReady(function() {
         var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-asn">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>ASN</td><td>AS' + data.asn + '</td></tr>';
-        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" /> ' + data.country_code + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(data.country_code)  + '" /> ' + country(data.country_code) + '</td></tr>';
         tabbedContentHtml += '<tr><td>Name</td><td>' + data.name + '</td></tr>';
         tabbedContentHtml += '<tr><td>Description</td><td><a href="#" class="new-tab">' + data.description_short + '</a></td></tr>';
         $.each(data.abuse_contacts, function( key, email ){
@@ -397,8 +397,8 @@ KangoAPI.onReady(function() {
                     }
 
                     tabbedContentHtml += '<tr>';
-                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
-                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(prefix.country_code)  + '" /></td>';
+                    tabbedContentHtml +=     '<td><a class="lookup-able" href="#">' + country(prefix.prefix) + '</a></td>';
                     tabbedContentHtml +=     '<td>' + prefix.description + '</td>';
                     tabbedContentHtml += '</tr>';
                 });
@@ -417,7 +417,7 @@ KangoAPI.onReady(function() {
                     }
 
                     tabbedContentHtml += '<tr>';
-                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(prefix.country_code)  + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
                     tabbedContentHtml +=     '<td>' + prefix.description + '</td>';
                     tabbedContentHtml += '</tr>';
@@ -459,7 +459,7 @@ KangoAPI.onReady(function() {
                     }
 
                     tabbedContentHtml += '<tr>';
-                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(peer.country_code)  + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + peer.description + '</a>';
@@ -487,7 +487,7 @@ KangoAPI.onReady(function() {
                     }
 
                     tabbedContentHtml += '<tr>';
-                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(peer.country_code)  + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + peer.description + '</a>';
@@ -537,7 +537,7 @@ KangoAPI.onReady(function() {
                     }
 
                     tabbedContentHtml += '<tr>';
-                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(upstream.country_code)  + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + upstream.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + upstream.description + '</a>';
@@ -565,7 +565,7 @@ KangoAPI.onReady(function() {
                     }
 
                     tabbedContentHtml += '<tr>';
-                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(upstream.country_code)  + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + upstream.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + upstream.description + '</a>';
@@ -615,7 +615,7 @@ KangoAPI.onReady(function() {
                     }
 
                     tabbedContentHtml += '<tr>';
-                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(downstream.country_code)  + '" /></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + downstream.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + downstream.description + '</a>';
@@ -643,7 +643,7 @@ KangoAPI.onReady(function() {
                     }
 
                     tabbedContentHtml += '<tr>';
-                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                    tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(downstream.country_code)  + '"/></td>';
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + downstream.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + downstream.description + '</a>';
@@ -686,7 +686,7 @@ KangoAPI.onReady(function() {
                 }
 
                 tabbedContentHtml += '<tr>';
-                tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                tabbedContentHtml +=     '<td><img src="' + flagImage + '" title="' + country(ix.country_code)  + '" /></td>';
                 tabbedContentHtml +=     '<td>' + humanFileSize(ix.speed) + '</td>';
                 tabbedContentHtml +=     '<td>' + ix.name_full + '</td>';
                 tabbedContentHtml += '</tr>';
@@ -726,7 +726,7 @@ KangoAPI.onReady(function() {
         var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-prefix">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>Prefix</td><td>' + data.prefix + '</td></tr>';
-        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" /> ' + data.country_codes.whois_country_code + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(data.country_codes.whois_country_code)  + '" /> ' + country(data.country_codes.whois_country_code) + '</td></tr>';
         tabbedContentHtml += '<tr><td>Name</td><td>' + data.name + '</td></tr>';
         tabbedContentHtml += '<tr><td>Description</td><td>' + data.description_short + '</td></tr>';
         if (data.ip.indexOf('.') > -1) {
@@ -761,7 +761,7 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>RIR Name</td><td>' + data.rir_allocation.rir_name + '</td></tr>';
         tabbedContentHtml += '<tr><td>Prefix</td><td><a class="lookup-able" href="#">' + data.rir_allocation.prefix + '</a></td></tr>';
-        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + kango.io.getResourceUrl('res/flags/24/' + data.rir_allocation.country_code + '.png') + '" /> ' + data.rir_allocation.country_code + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + kango.io.getResourceUrl('res/flags/24/' + data.rir_allocation.country_code + '.png') + '" title="' + country(data.rir_allocation.whois_country_code)  + '" /> ' + country(data.rir_allocation.country_code) + '</td></tr>';
         if (data.rir_allocation.ip.indexOf('.') > -1) {
             tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.rir_allocation.cidr) + '</td></tr>';
         }
@@ -781,7 +781,7 @@ KangoAPI.onReady(function() {
                 }
 
                 tabbedContentHtml += '<tr>';
-                tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + prefix.country_code + '"/></td>';
+                tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + country(prefix.country_code) + '"/></td>';
                 tabbedContentHtml += '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
                 tabbedContentHtml += '<td>' + prefix.description + '</td>';
                 tabbedContentHtml += '</tr>';
@@ -822,7 +822,7 @@ KangoAPI.onReady(function() {
         var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-ip-info">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>IP</td><td>' + data.ip + '</td></tr>';
-        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" /> ' + data.maxmind.country_code + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(data.maxmind.whois_country_code)  + '" /> ' + data.maxmind.country_code + '</td></tr>';
         tabbedContentHtml += '<tr><td>rDNS</td><td>' + data.ptr_record + '</td></tr>';
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
@@ -838,7 +838,7 @@ KangoAPI.onReady(function() {
             }
 
             tabbedContentHtml += '<tr>';
-            tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + prefix.country_code + '"/></td>';
+            tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + country(prefix.country_code) + '"/></td>';
             tabbedContentHtml += '<td><a class="lookup-able" href="#">AS' + prefix.asn.asn + '</a></td>';
             tabbedContentHtml += '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
             tabbedContentHtml += '<td>' + prefix.description + '</td>';
@@ -851,7 +851,7 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>RIR Name</td><td>' + data.rir_allocation.rir_name + '</td></tr>';
         tabbedContentHtml += '<tr><td>Prefix</td><td><a class="lookup-able" href="#">' + data.rir_allocation.prefix + '</a></td></tr>';
-        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + kango.io.getResourceUrl('res/flags/24/' + data.rir_allocation.country_code + '.png') + '" /> ' + data.rir_allocation.country_code + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + kango.io.getResourceUrl('res/flags/24/' + data.rir_allocation.country_code + '.png') + '" title="' + country(data.rir_allocation.whois_country_code)  + '" /> ' + country(data.rir_allocation.country_code) + '</td></tr>';
         if (data.rir_allocation.ip.indexOf('.') > -1) {
             tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.rir_allocation.cidr) + '</td></tr>';
         }
@@ -962,7 +962,7 @@ KangoAPI.onReady(function() {
             var flagImage = kango.io.getResourceUrl('res/flags/24/' + record.country_code + '.png');
 
             html += '<tr>';
-            html +=     '<td><img src="' + flagImage + '" /></td>';
+            html +=     '<td><img src="' + flagImage + '" title="' + country(record.country_code)  + '" /></td>';
             html +=     '<td><a class="lookup-able" href="#">' + record.address + '</a></td>';
             html +=     '<td>' + record.location + '</td>';
             html += '</tr>';
