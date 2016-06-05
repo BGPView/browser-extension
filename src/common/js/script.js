@@ -822,7 +822,7 @@ KangoAPI.onReady(function() {
         var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-ip-info">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>IP</td><td>' + data.ip + '</td></tr>';
-        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(data.maxmind.whois_country_code)  + '" /> ' + country(data.maxmind.country_code) + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(data.maxmind.country_code)  + '" /> ' + country(data.maxmind.country_code) + '</td></tr>';
         tabbedContentHtml += '<tr><td>rDNS</td><td>' + data.ptr_record + '</td></tr>';
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
