@@ -587,6 +587,37 @@ KangoAPI.onReady(function() {
             tabbedContentHtml += '</div>';
         }
 
+        // IX
+        if (data.internet_exchanges.length > 0) {
+            tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-ix">';
+            tabbedContentHtml += '<table class="table table-hover"><tbody>';
+
+            var normilisedIx = {};
+            $.each(data.internet_exchanges, function( key, ix ){
+                if (ix.ix_id in normilisedIx) {
+                    normilisedIx[ix.ix_id].speed += ix.speed;
+                } else {
+                    normilisedIx[ix.ix_id] = ix;
+                }
+            });
+
+            $.each(normilisedIx, function( key, ix ){
+                if (ix.country_code == null) {
+                    var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                } else {
+                    var flagImage = kango.io.getResourceUrl('res/flags/24/' + ix.country_code + '.png');
+                }
+
+                tabbedContentHtml += '<tr>';
+                tabbedContentHtml +=     '<td><img src="' + flagImage + '" /></td>';
+                tabbedContentHtml +=     '<td>' + humanFileSize(ix.speed) + '</td>';
+                tabbedContentHtml +=     '<td>' + ix.name_full + '</td>';
+                tabbedContentHtml += '</tr>';
+            });
+
+            tabbedContentHtml += '</tbody></table>';
+            tabbedContentHtml += '</div>';
+        }
 
 
         $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
