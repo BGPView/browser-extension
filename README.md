@@ -4,6 +4,8 @@
 
 ### This extension will allow you to see detailed information about the current website that you are browsing.
 
+Find the latest release for chrome of this extension [at the chrome webstore!](https://chrome.google.com/webstore/detail/bgpview/ffmkebnpkfkeoogeaphmdkpglgcdfdgg)
+
 ----
 You will be able to see such things as DNS records, GeoIP, whois records, ISP and Prefix Names, ASN upstreams, peering and routing.
 
@@ -32,4 +34,3 @@ Display all the Internet Exchanges (IX) that an ISP is part of
  ```
  python kango.py build browser-extension
  ```
- 
