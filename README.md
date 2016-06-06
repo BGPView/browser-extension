@@ -26,3 +26,10 @@ Display all the Internet Exchanges (IX) that an ISP is part of
 
 ![Image of ASN IXs](http://i.imgur.com/21ifM5U.png)
 ----
+
+## To build extension you will need to download the latest copy of the kangoextensions library and run the following:
+
+ ```
+ python kango.py build browser-extension
+ ```
+ 
