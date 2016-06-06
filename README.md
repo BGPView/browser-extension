@@ -1,8 +1,10 @@
 # BGPView (Multi) Browser Extension
 
-### A Kango extensions framework built project. A detailed way to debug and investigate information about IP addresses, ASN, IXs, BGP, ISPs, Prefixes and Domain names.
+#### A Kango extensions framework built project. A detailed way to debug and investigate information about IP addresses, ASN, IXs, BGP, ISPs, Prefixes and Domain names.
 
-### This extension will allow you to see detailed information about the current website that you are browsing.
+#### This extension will allow you to see detailed information about the current website that you are browsing.
+
+#### It is also a useful tool in order to diagnose and learn how the internet is inter connected and the hierarchy of which every website is connected via an ISP and thus part of the internet.
 
 Find the latest release for chrome of this extension [at the chrome webstore!](https://chrome.google.com/webstore/detail/bgpview/ffmkebnpkfkeoogeaphmdkpglgcdfdgg)
 

@@ -1,13 +1,13 @@
 {
     "content_scripts": [], 
-    "description": "IP/ASN information aggregator and analysis platform",
-    "creator": "Kango", 
+    "description": "A detailed way to debug and investigate information about IP addresses, ASN, IXs, BGP, ISPs, Prefixes and Domain names.",
+    "creator": "BGPView",
     "background_scripts": [
         "js/script.js",
         "js/jquery-2.2.4.min.js"
     ], 
     "homepage_url": "https://bgpview.io/",
-    "version": "1.1",
+    "version": "1.2",
     "browser_button": {
         "caption": "BGPView",
         "icon": "icons/button.png", 
