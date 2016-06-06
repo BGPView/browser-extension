@@ -114,3 +114,7 @@ a, a:active, a:visited, a:link {
 .more-info {
     float: right;
 }
+
+.nav-tabs .nav-tabs {
+    margin-top: 5px;
+}
