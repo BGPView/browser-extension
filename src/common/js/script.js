@@ -815,7 +815,9 @@ KangoAPI.onReady(function() {
         }
 
         var htmlUl = '<li role="presentation" class="active"><a href="#table-results-ip-info" aria-controls="table-results-ip-info" role="tab" data-toggle="tab" aria-expanded="true">IP Info</a></li>';
-        htmlUl += '<li role="presentation"><a href="#table-results-prefixes" aria-controls="table-results-prefixes" role="tab" data-toggle="tab" aria-expanded="true">Prefix(es)</a></li>';
+        if (data.prefixes.length > 1) {
+            htmlUl += '<li role="presentation"><a href="#table-results-prefixes" aria-controls="table-results-prefixes" role="tab" data-toggle="tab" aria-expanded="true">Prefixes</a></li>';
+        }
         htmlUl += '<li role="presentation"><a href="#table-results-rir-allocation" aria-controls="table-results-rir-allocation" role="tab" data-toggle="tab" aria-expanded="true">RIR Allocation</a></li>';
         $("#records-tab").html(htmlUl);
 
@@ -824,28 +826,35 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '<tr><td>IP</td><td>' + data.ip + '</td></tr>';
         tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(data.maxmind.country_code)  + '" /> ' + country(data.maxmind.country_code) + '</td></tr>';
         tabbedContentHtml += '<tr><td>rDNS</td><td>' + data.ptr_record + '</td></tr>';
+        if (typeof data.prefixes[0] != "undefined") {
+            tabbedContentHtml += '<tr><td>Prefix</td><td><a class="lookup-able" href="#">' + data.prefixes[0].prefix + '</a></td></tr>';
+            tabbedContentHtml += '<tr><td>ASN</td><td><a class="lookup-able" href="#">AS' + data.prefixes[0].asn.asn + '</a></td></tr>';
+            tabbedContentHtml += '<tr><td>Description</td><td>' + data.prefixes[0].description + '</td></tr>';
+        }
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
 
 
-        tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-prefixes">';
-        tabbedContentHtml += '<table class="table table-hover"><tbody>';
-        $.each(data.prefixes, function( key, prefix ){
-            if (prefix.country_code == null) {
-                var asnFlagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
-            } else {
-                var asnFlagImage = kango.io.getResourceUrl('res/flags/24/' + prefix.country_code + '.png');
-            }
+        if (data.prefixes.length > 1) {
+            tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-prefixes">';
+            tabbedContentHtml += '<table class="table table-hover"><tbody>';
+            $.each(data.prefixes, function( key, prefix ){
+                if (prefix.country_code == null) {
+                    var asnFlagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+                } else {
+                    var asnFlagImage = kango.io.getResourceUrl('res/flags/24/' + prefix.country_code + '.png');
+                }
 
-            tabbedContentHtml += '<tr>';
-            tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + country(prefix.country_code) + '"/></td>';
-            tabbedContentHtml += '<td><a class="lookup-able" href="#">AS' + prefix.asn.asn + '</a></td>';
-            tabbedContentHtml += '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
-            tabbedContentHtml += '<td>' + prefix.description + '</td>';
-            tabbedContentHtml += '</tr>';
-        });
-        tabbedContentHtml += '</tbody></table>';
-        tabbedContentHtml += '</div>';
+                tabbedContentHtml += '<tr>';
+                tabbedContentHtml += '<td><img src="' + asnFlagImage + '" title="' + country(prefix.country_code) + '"/></td>';
+                tabbedContentHtml += '<td><a class="lookup-able" href="#">AS' + prefix.asn.asn + '</a></td>';
+                tabbedContentHtml += '<td><a class="lookup-able" href="#">' + prefix.prefix + '</a></td>';
+                tabbedContentHtml += '<td>' + prefix.description + '</td>';
+                tabbedContentHtml += '</tr>';
+            });
+            tabbedContentHtml += '</tbody></table>';
+            tabbedContentHtml += '</div>';
+        }
 
         tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-rir-allocation">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
