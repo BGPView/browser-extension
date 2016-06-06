@@ -28,7 +28,7 @@ KangoAPI.onReady(function() {
         }
 
         // Add item to history array
-        if (skipHistroySave !== true) {
+        if (skipHistroySave !== true && dataHistory[dataHistory.length - 1] !== hostname) {
             dataHistory.push(hostname);
         }
 
