@@ -1081,7 +1081,7 @@ KangoAPI.onReady(function() {
     });
 
     $('body').on('click', '.new-tab', function(){
-        kango.browser.tabs.create({url:'http://www.google.com/search?hl=en&q=' + $(this).text().replace(' ', '+') + '&btnI=745'});
+        kango.browser.tabs.create({url:'http://www.google.com/search?hl=en&q=' + encodeURIComponent($(this).text().replace(' ', '+')) + '&btnI=745'});
     });
 
     $('body').on('click', '.more-info', function(){
