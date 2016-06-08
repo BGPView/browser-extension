@@ -802,10 +802,15 @@ KangoAPI.onReady(function() {
         $('.current-input').show();
         $('.more-info').show();
 
-        if (data.maxmind.country_code == null) {
-            var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
-        } else {
+        if (data.maxmind.country_code != null) {
             var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.maxmind.country_code + '.png');
+            var countryCode = data.maxmind.country_code;
+        } else if (typeof data.prefixes[0] != 'undefined' && data.prefixes[0].country_code != null) {
+            var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.prefixes[0].country_code + '.png');
+            var countryCode = data.prefixes[0].country_code;
+        } else{
+            var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
+            var countryCode = null;
         }
 
         if (data.ptr_record == null) {
@@ -824,7 +829,7 @@ KangoAPI.onReady(function() {
         var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-ip-info">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
         tabbedContentHtml += '<tr><td>IP</td><td>' + data.ip + '</td></tr>';
-        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(data.maxmind.country_code)  + '" /> ' + country(data.maxmind.country_code) + '</td></tr>';
+        tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(countryCode)  + '" /> ' + country(data.maxmind.country_code) + '</td></tr>';
         tabbedContentHtml += '<tr><td>rDNS</td><td>' + data.ptr_record + '</td></tr>';
         if (typeof data.prefixes[0] != "undefined") {
             tabbedContentHtml += '<tr><td>Prefix</td><td><a class="lookup-able" href="#">' + data.prefixes[0].prefix + '</a></td></tr>';
