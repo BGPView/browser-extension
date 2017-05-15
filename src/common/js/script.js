@@ -7,14 +7,14 @@ KangoAPI.onReady(function() {
     var start = function (fullUrl, parsed, skipHistroySave) {
         log('Starting the JS process + cleanup...');
 
-        $('.tab-content').text('');
-        $('.nav-tabs').text('');
-        $('#records-tab').text('');
-        $('.current-input').hide();
-        $('.base-domain').hide();
-        $('.more-info').hide();
-        $('.back-btn').hide();
-        $('.loader').show();
+        jQuery('.tab-content').text('');
+        jQuery('.nav-tabs').text('');
+        jQuery('#records-tab').text('');
+        jQuery('.current-input').hide();
+        jQuery('.base-domain').hide();
+        jQuery('.more-info').hide();
+        jQuery('.back-btn').hide();
+        jQuery('.loader').show();
 
         log('Current input URL: ' + fullUrl);
 
@@ -101,13 +101,13 @@ KangoAPI.onReady(function() {
 
     function postLoadIconDisplay()
     {
-        $('.loader').hide();
+        jQuery('.loader').hide();
 
         // Hide back button when there is no history
         if (dataHistory.length > 1) {
-            $('.back-btn').show();
+            jQuery('.back-btn').show();
         } else {
-            $('.back-btn').hide();
+            jQuery('.back-btn').hide();
         }
     }
 
@@ -129,7 +129,7 @@ KangoAPI.onReady(function() {
         log('Sending an abort');
 
         postLoadIconDisplay();
-        $('.main').append('<span class="error">No records found</span>');
+        jQuery('.main').append('<span class="error">No records found</span>');
 
         throw new Error('No Records Found');
     }
@@ -176,7 +176,7 @@ KangoAPI.onReady(function() {
             return displayRecords(cachedRecords);
         }
 
-        $.ajax({
+        jQuery.ajax({
             url: apiUrl,
             dataType: 'json',
             error: function(xhr){
@@ -215,7 +215,7 @@ KangoAPI.onReady(function() {
             return displayAsnInfo(cachedInfo);
         }
 
-        $.ajax({
+        jQuery.ajax({
             url: apiUrl,
             dataType: 'json',
             error: function(xhr){
@@ -247,7 +247,7 @@ KangoAPI.onReady(function() {
             return displayIpInfo(cachedInfo);
         }
 
-        $.ajax({
+        jQuery.ajax({
             url: apiUrl,
             dataType: 'json',
             error: function(xhr){
@@ -279,7 +279,7 @@ KangoAPI.onReady(function() {
             return displayPrefixInfo(cachedInfo);
         }
 
-        $.ajax({
+        jQuery.ajax({
             url: apiUrl,
             dataType: 'json',
             error: function(xhr){
@@ -306,9 +306,9 @@ KangoAPI.onReady(function() {
         log('Processing ASN info display');
         postLoadIconDisplay();
 
-        $('.current-input a').text('AS' + data.asn);
-        $('.current-input').show();
-        $('.more-info').show();
+        jQuery('.current-input a').text('AS' + data.asn);
+        jQuery('.current-input').show();
+        jQuery('.more-info').show();
 
         if (data.whois_country_code == null) {
             var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
@@ -334,7 +334,7 @@ KangoAPI.onReady(function() {
             htmlUl += '<li role="presentation"><a href="#table-results-ix" aria-controls="table-results-ix" role="tab" data-toggle="tab" aria-expanded="true">IX</a></li>';
         }
 
-        $('#records-tab').html(htmlUl);
+        jQuery('#records-tab').html(htmlUl);
 
 
         // ASN INFO
@@ -349,7 +349,7 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '<tr><td>Country</td><td><img src="' + flagImage + '" title="' + country(data.country_code)  + '" /> ' + country(data.country_code) + '</td></tr>';
         tabbedContentHtml += '<tr><td>Name</td><td>' + data.name + '</td></tr>';
         tabbedContentHtml += '<tr><td>Description</td><td><a href="#" class="new-tab">' + data.description_short + '</a></td></tr>';
-        $.each(data.abuse_contacts, function( key, email ){
+        jQuery.each(data.abuse_contacts, function( key, email ){
             tabbedContentHtml += '<tr><td>Abuse Contact</td><td><a href="mailto:' + email + '">' + email+ '</a></td></tr>';
         });
         if (data.looking_glass != null) {
@@ -386,7 +386,7 @@ KangoAPI.onReady(function() {
             if (data.prefixes.ipv4_prefixes.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-prefixes-ipv4">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
-                $.each(data.prefixes.ipv4_prefixes, function( key, prefix ){
+                jQuery.each(data.prefixes.ipv4_prefixes, function( key, prefix ){
                     if (prefix.country_code == null) {
                         var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                     } else {
@@ -406,7 +406,7 @@ KangoAPI.onReady(function() {
             if (data.prefixes.ipv6_prefixes.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-prefixes-ipv6">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
-                $.each(data.prefixes.ipv6_prefixes, function( key, prefix ){
+                jQuery.each(data.prefixes.ipv6_prefixes, function( key, prefix ){
                     if (prefix.country_code == null) {
                         var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                     } else {
@@ -448,7 +448,7 @@ KangoAPI.onReady(function() {
             if (data.peers.ipv4_peers.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-peers-ipv4">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
-                $.each(data.peers.ipv4_peers, function( key, peer ){
+                jQuery.each(data.peers.ipv4_peers, function( key, peer ){
                     if (peer.country_code == null) {
                         var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                     } else {
@@ -460,7 +460,7 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + peer.description + '</a>';
-                    $.each(data.peers.ipv6_peers, function( key, v6peer ){
+                    jQuery.each(data.peers.ipv6_peers, function( key, v6peer ){
                         if (v6peer.asn == peer.asn) {
                             tabbedContentHtml += '<span class="support-other-proto">v6</span>';
                             return false;
@@ -476,7 +476,7 @@ KangoAPI.onReady(function() {
             if (data.peers.ipv6_peers.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-peers-ipv6">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
-                $.each(data.peers.ipv6_peers, function( key, peer ){
+                jQuery.each(data.peers.ipv6_peers, function( key, peer ){
                     if (peer.country_code == null) {
                         var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                     } else {
@@ -488,7 +488,7 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + peer.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + peer.description + '</a>';
-                    $.each(data.peers.ipv4_peers, function( key, v4peer ){
+                    jQuery.each(data.peers.ipv4_peers, function( key, v4peer ){
                         if (v4peer.asn == peer.asn) {
                             tabbedContentHtml += '<span class="support-other-proto">v4</span>';
                             return false;
@@ -526,7 +526,7 @@ KangoAPI.onReady(function() {
             if (data.upstreams.ipv4_upstreams.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-upstreams-ipv4">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
-                $.each(data.upstreams.ipv4_upstreams, function( key, upstream ){
+                jQuery.each(data.upstreams.ipv4_upstreams, function( key, upstream ){
                     if (upstream.country_code == null) {
                         var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                     } else {
@@ -538,7 +538,7 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + upstream.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + upstream.description + '</a>';
-                    $.each(data.upstreams.ipv6_upstreams, function( key, v6upstream ){
+                    jQuery.each(data.upstreams.ipv6_upstreams, function( key, v6upstream ){
                         if (v6upstream.asn == upstream.asn) {
                             tabbedContentHtml += '<span class="support-other-proto">v6</span>';
                             return false;
@@ -554,7 +554,7 @@ KangoAPI.onReady(function() {
             if (data.upstreams.ipv6_upstreams.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-upstreams-ipv6">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
-                $.each(data.upstreams.ipv6_upstreams, function( key, upstream ){
+                jQuery.each(data.upstreams.ipv6_upstreams, function( key, upstream ){
                     if (upstream.country_code == null) {
                         var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                     } else {
@@ -566,7 +566,7 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + upstream.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + upstream.description + '</a>';
-                    $.each(data.upstreams.ipv4_upstreams, function( key, v4upstream ){
+                    jQuery.each(data.upstreams.ipv4_upstreams, function( key, v4upstream ){
                         if (v4upstream.asn == upstream.asn) {
                             tabbedContentHtml += '<span class="support-other-proto">v4</span>';
                             return false;
@@ -604,7 +604,7 @@ KangoAPI.onReady(function() {
             if (data.downstreams.ipv4_downstreams.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-downstreams-ipv4">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
-                $.each(data.downstreams.ipv4_downstreams, function( key, downstream ){
+                jQuery.each(data.downstreams.ipv4_downstreams, function( key, downstream ){
                     if (downstream.country_code == null) {
                         var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                     } else {
@@ -616,7 +616,7 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + downstream.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + downstream.description + '</a>';
-                    $.each(data.downstreams.ipv6_downstreams, function( key, v6downstream ){
+                    jQuery.each(data.downstreams.ipv6_downstreams, function( key, v6downstream ){
                         if (v6downstream.asn == downstream.asn) {
                             tabbedContentHtml += '<span class="support-other-proto">v6</span>';
                             return false;
@@ -632,7 +632,7 @@ KangoAPI.onReady(function() {
             if (data.downstreams.ipv6_downstreams.length > 0) {
                 tabbedContentHtml += '<div role="tabpanel" class="tab-pane ' + active + '" id="table-downstreams-ipv6">';
                 tabbedContentHtml +=    '<table class="table table-hover"><tbody>';
-                $.each(data.downstreams.ipv6_downstreams, function( key, downstream ){
+                jQuery.each(data.downstreams.ipv6_downstreams, function( key, downstream ){
                     if (downstream.country_code == null) {
                         var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                     } else {
@@ -644,7 +644,7 @@ KangoAPI.onReady(function() {
                     tabbedContentHtml +=     '<td><a class="lookup-able" href="#">AS' + downstream.asn + '</a></td>';
                     tabbedContentHtml +=     '<td>';
                     tabbedContentHtml +=        '<a class="new-tab" href="#">' + downstream.description + '</a>';
-                    $.each(data.downstreams.ipv4_downstreams, function( key, v4downstream ){
+                    jQuery.each(data.downstreams.ipv4_downstreams, function( key, v4downstream ){
                         if (v4downstream.asn == downstream.asn) {
                             tabbedContentHtml += '<span class="support-other-proto">v4</span>';
                             return false;
@@ -667,7 +667,7 @@ KangoAPI.onReady(function() {
             tabbedContentHtml += '<table class="table table-hover"><tbody>';
 
             var normilisedIx = {};
-            $.each(data.internet_exchanges, function( key, ix ){
+            jQuery.each(data.internet_exchanges, function( key, ix ){
                 if (ix.ix_id in normilisedIx) {
                     normilisedIx[ix.ix_id].speed += ix.speed;
                 } else {
@@ -675,7 +675,7 @@ KangoAPI.onReady(function() {
                 }
             });
 
-            $.each(normilisedIx, function( key, ix ){
+            jQuery.each(normilisedIx, function( key, ix ){
                 if (ix.country_code == null) {
                     var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                 } else {
@@ -694,7 +694,7 @@ KangoAPI.onReady(function() {
         }
 
 
-        $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
+        jQuery(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
     }
 
     function displayPrefixInfo(data)
@@ -702,9 +702,9 @@ KangoAPI.onReady(function() {
         log('Processing prefix info display');
         postLoadIconDisplay();
 
-        $('.current-input a').text(data.prefix);
-        $('.current-input').show();
-        $('.more-info').show();
+        jQuery('.current-input a').text(data.prefix);
+        jQuery('.current-input').show();
+        jQuery('.more-info').show();
 
         if (data.country_codes.whois_country_code == null) {
             var flagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
@@ -718,7 +718,7 @@ KangoAPI.onReady(function() {
         if (data.related_prefixes.length > 0) {
             htmlUl += '<li role="presentation"><a href="#table-results-related-prefixes" aria-controls="table-results-related-prefixes" role="tab" data-toggle="tab" aria-expanded="true">Related Prefixes</a></li>';
         }
-        $("#records-tab").html(htmlUl);
+        jQuery("#records-tab").html(htmlUl);
 
         var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-prefix">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
@@ -729,7 +729,7 @@ KangoAPI.onReady(function() {
         if (data.ip.indexOf('.') > -1) {
             tabbedContentHtml += '<tr><td>IP Addresses</td><td>' + getAddressCount(data.cidr) + '</td></tr>';
         }
-        $.each(data.abuse_contacts, function( key, email ){
+        jQuery.each(data.abuse_contacts, function( key, email ){
             tabbedContentHtml += '<tr><td>Abuse Contact</td><td><a href="mailto:' + email + '">' + email+ '</a></td></tr>';
         });
         tabbedContentHtml += '</tbody></table>';
@@ -737,7 +737,7 @@ KangoAPI.onReady(function() {
 
         tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-asns">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
-        $.each(data.asns, function( key, asn ){
+        jQuery.each(data.asns, function( key, asn ){
             if (asn.country_code == null) {
                 var asnFlagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
             } else {
@@ -770,7 +770,7 @@ KangoAPI.onReady(function() {
         if (data.related_prefixes.length > 0) {
             tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-related-prefixes">';
             tabbedContentHtml += '<table class="table table-hover"><tbody>';
-            $.each(data.related_prefixes, function (key, prefix) {
+            jQuery.each(data.related_prefixes, function (key, prefix) {
                 if (prefix.country_code == null) {
                     var asnFlagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                 } else {
@@ -787,7 +787,7 @@ KangoAPI.onReady(function() {
             tabbedContentHtml += '</div>';
         }
 
-        $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
+        jQuery(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
     }
 
     function displayIpInfo(data)
@@ -795,9 +795,9 @@ KangoAPI.onReady(function() {
         log('Processing IP info display');
         postLoadIconDisplay();
 
-        $('.current-input a').text(data.ip);
-        $('.current-input').show();
-        $('.more-info').show();
+        jQuery('.current-input a').text(data.ip);
+        jQuery('.current-input').show();
+        jQuery('.more-info').show();
 
         if (data.maxmind.country_code != null) {
             var flagImage = kango.io.getResourceUrl('res/flags/24/' + data.maxmind.country_code + '.png');
@@ -821,7 +821,7 @@ KangoAPI.onReady(function() {
             htmlUl += '<li role="presentation"><a href="#table-results-prefixes" aria-controls="table-results-prefixes" role="tab" data-toggle="tab" aria-expanded="true">Prefixes</a></li>';
         }
         htmlUl += '<li role="presentation"><a href="#table-results-rir-allocation" aria-controls="table-results-rir-allocation" role="tab" data-toggle="tab" aria-expanded="true">RIR Allocation</a></li>';
-        $("#records-tab").html(htmlUl);
+        jQuery("#records-tab").html(htmlUl);
 
         var tabbedContentHtml = '<div role="tabpanel" class="tab-pane active" id="table-results-ip-info">';
         tabbedContentHtml += '<table class="table table-hover"><tbody>';
@@ -840,7 +840,7 @@ KangoAPI.onReady(function() {
         if (data.prefixes.length > 1) {
             tabbedContentHtml += '<div role="tabpanel" class="tab-pane" id="table-results-prefixes">';
             tabbedContentHtml += '<table class="table table-hover"><tbody>';
-            $.each(data.prefixes, function( key, prefix ){
+            jQuery.each(data.prefixes, function( key, prefix ){
                 if (prefix.country_code == null) {
                     var asnFlagImage = kango.io.getResourceUrl('res/flags/24/_unknown.png');
                 } else {
@@ -870,7 +870,7 @@ KangoAPI.onReady(function() {
         tabbedContentHtml += '</tbody></table>';
         tabbedContentHtml += '</div>';
 
-        $(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
+        jQuery(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
 
     }
 
@@ -883,21 +883,21 @@ KangoAPI.onReady(function() {
         log('Processing record display');
         postLoadIconDisplay();
 
-        $('.current-input a').text(data.hostname);
-        $('.base-domain a').text(data.base_domain);
+        jQuery('.current-input a').text(data.hostname);
+        jQuery('.base-domain a').text(data.base_domain);
 
-        $('.current-input').show();
+        jQuery('.current-input').show();
         if (data.hostname != data.base_domain) {
-            $('.base-domain').show();
+            jQuery('.base-domain').show();
         }
 
         var active = 'active';
-        $.each(data.dns_records, function( rrType, records ){
+        jQuery.each(data.dns_records, function( rrType, records ){
             var htmlUl = '<li role="presentation" class="' + active + '"><a href="#table-results-' + rrType + '" aria-controls="table-results-' + rrType + '" role="tab" data-toggle="tab" aria-expanded="true">' + rrType + '</a></li>';
-            $("#records-tab").append(htmlUl);
+            jQuery("#records-tab").append(htmlUl);
 
             var tabbedContentHtml = '<div role="tabpanel" class="tab-pane ' + active + '" id="table-results-' + rrType + '"></div>';
-            $(".records-tabbed-content").find('.tab-content').append(tabbedContentHtml);
+            jQuery(".records-tabbed-content").find('.tab-content').append(tabbedContentHtml);
 
             // Execute the RR render
             if (rrType === 'A') {
@@ -928,7 +928,7 @@ KangoAPI.onReady(function() {
 
         var html = '<table class="table table-hover"><tbody>';
 
-        $.each(records, function( key, record ){
+        jQuery.each(records, function( key, record ){
 
             if (record.country_code == null) {
                 record.country_code = '_unknown';
@@ -944,7 +944,7 @@ KangoAPI.onReady(function() {
         });
 
         html += '</tbody></table>';
-        $('#table-results-' + rrType).html(html);
+        jQuery('#table-results-' + rrType).html(html);
     }
 
     function renderStringRecords(rrType, records, makeLink)
@@ -953,7 +953,7 @@ KangoAPI.onReady(function() {
 
         var html = '<table class="table table-hover"><tbody>';
 
-        $.each(records, function( key, record ){
+        jQuery.each(records, function( key, record ){
 
             if (makeLink === true) {
                 record = '<a class="lookup-able" href="#">' + record + '</a>';
@@ -965,7 +965,7 @@ KangoAPI.onReady(function() {
         });
 
         html += '</tbody></table>';
-        $('#table-results-' + rrType).html(html);
+        jQuery('#table-results-' + rrType).html(html);
     }
 
     function renderA(records)
@@ -994,13 +994,13 @@ KangoAPI.onReady(function() {
 
         var html = '<table class="table table-hover"><tbody>';
 
-        $.each(records, function( key, record ){
+        jQuery.each(records, function( key, record ){
 
             // Check if record is SPF
             if (record.toLowerCase().lastIndexOf('v=spf1', 0) === 0) {
                 var spfParts = record.split(' ');
                 // Loop through all the SPF parts to replace IPs and domains
-                $.each(spfParts, function( key, value ){
+                jQuery.each(spfParts, function( key, value ){
                     value = value.toLocaleLowerCase();
 
                     if (value.lastIndexOf('ip4:', 0) === 0) {
@@ -1024,7 +1024,7 @@ KangoAPI.onReady(function() {
         });
 
         html += '</tbody></table>';
-        $('#table-results-TXT').html(html);
+        jQuery('#table-results-TXT').html(html);
     }
 
     function renderSOA(records)
@@ -1037,21 +1037,21 @@ KangoAPI.onReady(function() {
         return renderStringRecords('CNAME', records, true)
     }
 
-    $('body').on('click', '.lookup-able', function(){
-        start($(this).text(), true);
+    jQuery('body').on('click', '.lookup-able', function(){
+        start(jQuery(this).text(), true);
     });
 
-    $('body').on('click', '.back-btn', function(){
+    jQuery('body').on('click', '.back-btn', function(){
         dataHistory.pop();
         start(dataHistory[dataHistory.length - 1], true, true);
     });
 
-    $('body').on('click', '.new-tab', function(){
-        kango.browser.tabs.create({url:'http://www.google.com/search?hl=en&q=' + encodeURIComponent($(this).text().replace(' ', '+')) + '&btnI=745'});
+    jQuery('body').on('click', '.new-tab', function(){
+        kango.browser.tabs.create({url:'http://www.google.com/search?hl=en&q=' + encodeURIComponent(jQuery(this).text().replace(' ', '+')) + '&btnI=745'});
     });
 
-    $('body').on('click', '.more-info', function(){
-        kango.browser.tabs.create({url:'https://bgpview.io/search/redirect/' + $('.current-input a').text()});
+    jQuery('body').on('click', '.more-info', function(){
+        kango.browser.tabs.create({url:'https://bgpview.io/search/redirect/' + jQuery('.current-input a').text()});
     });
 
 });
