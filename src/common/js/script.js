@@ -1,18 +1,15 @@
 KangoAPI.onReady(function() {
-
     var debug = true;
     var dataHistory = [];
-
-    kango.browser.tabs.getCurrent(function(tab) {
+    kango.browser.tabs.getCurrent(function (tab) {
         start(tab.getUrl(), false);
     });
-
-    function start(fullUrl, parsed, skipHistroySave) {
+    var start = function (fullUrl, parsed, skipHistroySave) {
         log('Starting the JS process + cleanup...');
 
         $('.tab-content').text('');
         $('.nav-tabs').text('');
-        $("#records-tab").text('');
+        $('#records-tab').text('');
         $('.current-input').hide();
         $('.base-domain').hide();
         $('.more-info').hide();
@@ -132,7 +129,7 @@ KangoAPI.onReady(function() {
         log('Sending an abort');
 
         postLoadIconDisplay();
-        $(".main").append('<span class="error">No records found</span>');
+        $('.main').append('<span class="error">No records found</span>');
 
         throw new Error('No Records Found');
     }
@@ -181,7 +178,7 @@ KangoAPI.onReady(function() {
 
         $.ajax({
             url: apiUrl,
-            dataType: "json",
+            dataType: 'json',
             error: function(xhr){
                 log('API Call errored: ' + xhr.responseText)
                 return abort();
@@ -220,7 +217,7 @@ KangoAPI.onReady(function() {
 
         $.ajax({
             url: apiUrl,
-            dataType: "json",
+            dataType: 'json',
             error: function(xhr){
                 log('API Call errored: ' + xhr.responseText)
                 return abort();
@@ -252,7 +249,7 @@ KangoAPI.onReady(function() {
 
         $.ajax({
             url: apiUrl,
-            dataType: "json",
+            dataType: 'json',
             error: function(xhr){
                 log('API Call errored: ' + xhr.responseText)
                 return abort();
@@ -284,7 +281,7 @@ KangoAPI.onReady(function() {
 
         $.ajax({
             url: apiUrl,
-            dataType: "json",
+            dataType: 'json',
             error: function(xhr){
                 log('API Call errored: ' + xhr.responseText)
                 return abort();
@@ -337,7 +334,7 @@ KangoAPI.onReady(function() {
             htmlUl += '<li role="presentation"><a href="#table-results-ix" aria-controls="table-results-ix" role="tab" data-toggle="tab" aria-expanded="true">IX</a></li>';
         }
 
-        $("#records-tab").html(htmlUl);
+        $('#records-tab').html(htmlUl);
 
 
         // ASN INFO
