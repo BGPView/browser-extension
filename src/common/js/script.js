@@ -113,7 +113,7 @@ KangoAPI.onReady(function() {
 	}
 	var getAdressInfo = function (ipAddress) {
 		getJSON('/ip/' + ipAddress, function (err, res) {
-			if (err || !res || res.status === 'error' {
+			if (err || !res || res.status === 'error') {
 				return abort();
 			}
 			displayIpInfo(res.data)
@@ -121,7 +121,7 @@ KangoAPI.onReady(function() {
 	}
 	var getPrefixInfo = function (prefix) {
 		getJSON('/prefix/' + prefix, function (err, res) {
-			if (err || !res || res.status === 'error' {
+			if (err || !res || res.status === 'error') {
 				return abort();
 			}
 			displayPrefixInfo(res.data);
