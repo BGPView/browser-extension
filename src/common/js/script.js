@@ -1,4 +1,5 @@
 KangoAPI.onReady(function() {
+	var apiurl = 'https://api.bgpview.io';
 	var debug = true;
 	var dataHistory = [];
 	kango.browser.tabs.getCurrent(function (tab) {
@@ -79,113 +80,51 @@ KangoAPI.onReady(function() {
 		item.expire = Math.floor(Date.now() / 1000) + 60*6*6; // 6 hours expire
 		kango.storage.setItem(key, item)
 	}
-	var getDnsRecords = function (hostname) {
-		var apiUrl = 'https://api.bgpview.io/dns/live/' + hostname + '?source=browser_extension';
-		log('DNS query URL: ' + apiUrl);
-		var cachedRecords = getCached(hostname);
-		if (cachedRecords !== false) {
-			return displayRecords(cachedRecords);
+	var getJSON = function (url, callback) {
+		var cachedRecords = getCached(url);
+		if (cachedRecords) {
+			return cachedRecords;
 		}
-		jQuery.ajax({
-			url: apiUrl,
-			dataType: 'json',
-			error: function(xhr){
-				log('API Call errored: ' + xhr.responseText)
+		var req = jQuery.getJSON(apiurl + url + '?source=browser_extension');
+		req.done(function (data) {
+			callback(null, data);
+			setCached(url, data);
+		});
+		req.fail(function (jqxhr, textStatus, error) {
+			callback(error, '');
+		});
+	};
+	var getDnsRecords = function (hostname) {
+		getJSON('/dns/live/' + hostname, function (err, res) {
+			if (err || !data || data.status === 'error') {
 				return abort();
-			},
-			success: function(data){
-				if (data.status == 'error') {
-					log('API Call errored: ' + data.status_message)
-					return abort();
-				} else if (data.data.dns_records.length < 1) {
-					log('Domain returned no DNS records')
-					return abort();
-				}
-				log(data);
-				setCached(hostname, data.data);
-				return displayRecords(data.data);
-			},
-			timeout: 6000 // sets timeout to 6 seconds
+			}
+			displayRecords(res.data);
 		});
 	}
 	var getAsnInfo = function (asn) {
-		asn = asn.toLocaleLowerCase().replace('as', '');
-		var apiUrl = 'https://api.bgpview.io/asn/' + asn + '?source=browser_extension';
-		apiUrl += '&with_ixs=true&with_peers=true&with_prefixes=true&with_upstreams=true&with_downstreams=true';
-		log('IP query URL: ' + apiUrl);
-		var cachedInfo = getCached(asn);
-		if (cachedInfo !== false) {
-			return displayAsnInfo(cachedInfo);
-		}
-		jQuery.ajax({
-			url: apiUrl,
-			dataType: 'json',
-			error: function(xhr){
-				log('API Call errored: ' + xhr.responseText)
+		asn = Number(asn.match(/^as ?[0-9]+$/i)[1]);
+		getJSON('/asn/' + asn, function (err, res) {
+			if (err || !res || res.status === 'error') {
 				return abort();
-			},
-			success: function(data){
-				if (data.status == 'error') {
-					log('API Call errored: ' + data.status_message)
-					return abort();
-				}
-				log(data);
-				setCached(asn, data.data);
-				return displayAsnInfo(data.data);
-			},
-			timeout: 6000 // sets timeout to 6 seconds
+			}
+			displayAsnInfo(res.data);
 		});
 	}
 	var getAdressInfo = function (ipAddress) {
-		var apiUrl = 'https://api.bgpview.io/ip/' + ipAddress + '?source=browser_extension';
-		log('IP query URL: ' + apiUrl);
-		var cachedInfo = getCached(ipAddress);
-		if (cachedInfo !== false) {
-			return displayIpInfo(cachedInfo);
-		}
-		jQuery.ajax({
-			url: apiUrl,
-			dataType: 'json',
-			error: function(xhr){
-				log('API Call errored: ' + xhr.responseText)
+		getJSON('/ip/' + ipAddress, function (err, res) {
+			if (err || !res || res.status === 'error' {
 				return abort();
-			},
-			success: function(data){
-				if (data.status == 'error') {
-					log('API Call errored: ' + data.status_message)
-					return abort();
-				}
-				log(data);
-				setCached(ipAddress, data.data);
-				return displayIpInfo(data.data);
-			},
-			timeout: 6000 // sets timeout to 6 seconds
+			}
+			displayIpInfo(res.data)
 		});
 	}
 	var getPrefixInfo = function (prefix) {
-		var apiUrl = 'https://api.bgpview.io/prefix/' + prefix + '?source=browser_extension';
-		log('Prefix query URL: ' + apiUrl);
-		var cachedInfo = getCached(prefix);
-		if (cachedInfo !== false) {
-			return displayPrefixInfo(cachedInfo);
-		}
-		jQuery.ajax({
-			url: apiUrl,
-			dataType: 'json',
-			error: function(xhr){
-				log('API Call errored: ' + xhr.responseText)
+		getJSON('/prefix/' + prefix, function (err, res) {
+			if (err || !res || res.status === 'error' {
 				return abort();
-			},
-			success: function(data){
-				if (data.status == 'error') {
-					log('API Call errored: ' + data.status_message)
-					return abort();
-				}
-				log(data);
-				setCached(prefix, data.data);
-				return displayPrefixInfo(data.data);
-			},
-			timeout: 6000 // sets timeout to 6 seconds
+			}
+			displayPrefixInfo(res.data);
 		});
 	}
 	var displayAsnInfo = function (data) {
