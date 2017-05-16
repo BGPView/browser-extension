@@ -43,14 +43,12 @@ KangoAPI.onReady(function() {
 			kango.console.log(message);
 		}
 	}
-	var displayDate = function (date)
-	{
+	var displayDate = function (date) {
 		var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 		var dateObj = new Date(date);
 		return dateObj.getDate() + ' ' + months[dateObj.getMonth()] + ' ' + dateObj.getFullYear();
 	}
-	var validIP = function (ipAddress)
-	{
+	var validIP = function (ipAddress) {
 		var expression = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/;
 		if (expression.test(ipAddress)) {
 			return true;
@@ -58,16 +56,14 @@ KangoAPI.onReady(function() {
 			return false;
 		}
 	}
-	var validAsn = function(asn)
-	{
+	var validAsn = function(asn) {
 		var asn = asn.toLowerCase().replace('as', '');
 		if (asn % 1 !== 0) {
 			return false;
 		}
 		return true;
 	}
-	var validPrefix = function (prefix)
-	{
+	var validPrefix = function (prefix) {
 		var parts = prefix.split('/');
 		// Need to have only 2 parts
 		if (parts.length !== 2) {
@@ -80,8 +76,7 @@ KangoAPI.onReady(function() {
 		// Check first part is a valid IP
 		return validIP(parts[0]);
 	}
-	var postLoadIconDisplay = function ()
-	{
+	var postLoadIconDisplay = function () {
 		jQuery('.loader').hide();
 		// Hide back button when there is no history
 		if (dataHistory.length > 1) {
@@ -116,8 +111,7 @@ KangoAPI.onReady(function() {
 		// The replace is done for IPv6 HTTP hosts
 		return a.hostname.replace('[','').replace(']', '');
 	}
-	var getCahed = function (key)
-	{
+	var getCahed = function (key) {
 		log('Checking if the key `' + key + '` is in our local cache');
 		var item = kango.storage.getItem(key);
 		var currentTime = Math.floor(Date.now() / 1000);
@@ -128,8 +122,7 @@ KangoAPI.onReady(function() {
 		log('`' + key + '` IS in local cache')
 		return item;
 	}
-	var setCahed = function (key, item)
-	{
+	var setCahed = function (key, item) {
 		log('Setting`' + key + '` in our local cache');
 		item.expire = Math.floor(Date.now() / 1000) + 60*6*6; // 6 hours expire
 		kango.storage.setItem(key, item)
@@ -164,8 +157,7 @@ KangoAPI.onReady(function() {
 			timeout: 6000 // sets timeout to 6 seconds
 		});
 	}
-	var getAsnInfo = function (asn)
-	{
+	var getAsnInfo = function (asn) {
 		asn = asn.toLocaleLowerCase().replace('as', '');
 		var apiUrl = 'https://api.bgpview.io/asn/' + asn + '?source=browser_extension';
 		apiUrl += '&with_ixs=true&with_peers=true&with_prefixes=true&with_upstreams=true&with_downstreams=true';
@@ -193,8 +185,7 @@ KangoAPI.onReady(function() {
 			timeout: 6000 // sets timeout to 6 seconds
 		});
 	}
-	var getAdressInfo = function (ipAddress)
-	{
+	var getAdressInfo = function (ipAddress) {
 		var apiUrl = 'https://api.bgpview.io/ip/' + ipAddress + '?source=browser_extension';
 		log('IP query URL: ' + apiUrl);
 		var cachedInfo = getCahed(ipAddress);
@@ -220,8 +211,7 @@ KangoAPI.onReady(function() {
 			timeout: 6000 // sets timeout to 6 seconds
 		});
 	}
-	var getPrefixInfo = function (prefix)
-	{
+	var getPrefixInfo = function (prefix) {
 		var apiUrl = 'https://api.bgpview.io/prefix/' + prefix + '?source=browser_extension';
 		log('Prefix query URL: ' + apiUrl);
 		var cachedInfo = getCahed(prefix);
@@ -247,8 +237,7 @@ KangoAPI.onReady(function() {
 			timeout: 6000 // sets timeout to 6 seconds
 		});
 	}
-	var displayAsnInfo = function (data)
-	{
+	var displayAsnInfo = function (data) {
 		log('Processing ASN info display');
 		postLoadIconDisplay();
 		jQuery('.current-input a').text('AS' + data.asn);
@@ -607,8 +596,7 @@ KangoAPI.onReady(function() {
 		}
 		jQuery(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
 	}
-	var displayPrefixInfo = function (data)
-	{
+	var displayPrefixInfo = function (data) {
 		log('Processing prefix info display');
 		postLoadIconDisplay();
 		jQuery('.current-input a').text(data.prefix);
@@ -687,8 +675,7 @@ KangoAPI.onReady(function() {
 		}
 		jQuery(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
 	}
-	var displayIpInfo = function (data)
-	{
+	var displayIpInfo = function (data) {
 		log('Processing IP info display');
 		postLoadIconDisplay();
 		jQuery('.current-input a').text(data.ip);
@@ -762,8 +749,7 @@ KangoAPI.onReady(function() {
 	var getAddressCount = function (length, type) {
 		return Math.pow(2, (type === 6 ? 128 : 32) - length);
 	};
-	var displayRecords = function (data)
-	{
+	var displayRecords = function (data) {
 		log('Processing record display');
 		postLoadIconDisplay();
 		jQuery('.current-input a').text(data.hostname);
@@ -799,8 +785,7 @@ KangoAPI.onReady(function() {
 			}
 		});
 	}
-	var renderAddressRecords = function (rrType, records)
-	{
+	var renderAddressRecords = function (rrType, records) {
 		log('Rendering all ' + rrType + ' records');
 		var html = '<table class="table table-hover"><tbody>';
 		jQuery.each(records, function( key, record ){
@@ -817,8 +802,7 @@ KangoAPI.onReady(function() {
 		html += '</tbody></table>';
 		jQuery('#table-results-' + rrType).html(html);
 	}
-	var renderStringRecords = function (rrType, records, makeLink)
-	{
+	var renderStringRecords = function (rrType, records, makeLink) {
 		log('Rendering all ' + rrType + ' records');
 		var html = '<table class="table table-hover"><tbody>';
 		jQuery.each(records, function( key, record ){
@@ -832,24 +816,19 @@ KangoAPI.onReady(function() {
 		html += '</tbody></table>';
 		jQuery('#table-results-' + rrType).html(html);
 	}
-	var renderA = function (records)
-	{
+	var renderA = function (records) {
 		return renderAddressRecords('A', records)
 	}
-	var renderAAAA = function (records)
-	{
+	var renderAAAA = function (records) {
 		return renderAddressRecords('AAAA', records)
 	}
-	var renderNS = function (records)
-	{
+	var renderNS = function (records) {
 		return renderStringRecords('NS', records, true)
 	}
-	var renderMX = function (records)
-	{
+	var renderMX = function (records) {
 		return renderStringRecords('MX', records, true)
 	}
-	var renderTXT = function (records)
-	{
+	var renderTXT = function (records) {
 		log('Rendering all TXT records');
 		var html = '<table class="table table-hover"><tbody>';
 		jQuery.each(records, function( key, record ){
@@ -879,12 +858,10 @@ KangoAPI.onReady(function() {
 		html += '</tbody></table>';
 		jQuery('#table-results-TXT').html(html);
 	}
-	var renderSOA = function (records)
-	{
+	var renderSOA = function (records) {
 		return renderStringRecords('SOA', records)
 	}
-	var renderCNAME = function (records)
-	{
+	var renderCNAME = function (records) {
 		return renderStringRecords('CNAME', records, true)
 	}
 	jQuery('body').on('click', '.lookup-able', function(){
