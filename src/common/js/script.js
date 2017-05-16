@@ -39,7 +39,7 @@ KangoAPI.onReady(function() {
 		}
 	}
 	var log = function (message) {
-		if (debug === true) {
+		if (debug) {
 			kango.console.log(message);
 		}
 	}
