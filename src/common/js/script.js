@@ -15,11 +15,7 @@ KangoAPI.onReady(function() {
 		jQuery('.back-btn').hide();
 		jQuery('.loader').show();
 		log('Current input URL: ' + fullUrl);
-		if (parsed === true) {
-			var hostname = fullUrl;
-		} else {
-			var hostname = getDomain(fullUrl);
-		}
+		var hostname = parsed ? fullUrl : extractDomain(fullUrl)
 		// Add item to history array
 		if (skipHistroySave !== true && dataHistory[dataHistory.length - 1] !== hostname) {
 			dataHistory.push(hostname);
@@ -47,89 +43,46 @@ KangoAPI.onReady(function() {
 		return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 	}
 	var validIP = function (ipAddress) {
-		var expression = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/;
-		if (expression.test(ipAddress)) {
-			return true;
-		} else {
-			return false;
-		}
+		return /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/.test(ipAddress);
 	}
 	var validAsn = function(asn) {
-		var asn = asn.toLowerCase().replace('as', '');
-		if (asn % 1 !== 0) {
-			return false;
-		}
-		return true;
+		return /^as ?[0-9]+$/i.test(asn)
 	}
 	var validPrefix = function (prefix) {
 		var parts = prefix.split('/');
-		// Need to have only 2 parts
-		if (parts.length !== 2) {
-			return false;
-		}
-		// Second part must be an a number
-		if (parts[1] % 1 !== 0) {
-			return false;
-		}
-		// Check first part is a valid IP
-		return validIP(parts[0]);
+		return parts.length === 2 && !isNaN(parts[1]) && getAddressCount(Number(parts[1])) && validIP(parts[0])
 	}
 	var postLoadIconDisplay = function () {
 		jQuery('.loader').hide();
-		// Hide back button when there is no history
-		if (dataHistory.length > 1) {
-			jQuery('.back-btn').show();
-		} else {
-			jQuery('.back-btn').hide();
-		}
+		jQuery('.back-btn')[dataHistory.length ? 'show' : 'hide']();
 	}
-	var humanFileSize = function (bits) {
-		var thresh = 1000;
-		if(Math.abs(bits) < thresh) {
-			return bits + ' Mbps';
-		}
-		var units = ['Gbps','Tbps','Pbps','Ebps'];
-		var u = -1;
-		do {
-			bits /= thresh;
-			++u;
-		} while(Math.abs(bits) >= thresh && u < units.length - 1);
-		return Math.floor(bits.toFixed(1)) +' '+units[u];
-	}
+	var humanReadableBitSpeed = function (bits) {
+		var i = Math.floor(Math.log(bits) / Math.log(1000));
+		var prefixes = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+		return (!bits ? '0 ' : i > prefixes.length - 1 ? bits : (bits / Math.pow(1000, i)).toFixed(2) * 1 + ' ' + prefixes[i]) + 'bps';
+	};
 	var abort = function () {
 		log('Sending an abort');
 		postLoadIconDisplay();
 		jQuery('.main').append('<span class="error">No records found</span>');
 		throw new Error('No Records Found');
 	}
-	var getDomain = function (fullUrl) {
-		var a = document.createElement('a');
-		a.href = fullUrl;
-		log('Hostname: ' + a.hostname);
-		// The replace is done for IPv6 HTTP hosts
-		return a.hostname.replace('[','').replace(']', '');
+	var extractDomain = function (fullUrl) {
+		var match = fullUrl.match(/(?:https?:)\/\/([^:\/$]+)/);
+		return match ? match[1] : false;
 	}
-	var getCahed = function (key) {
-		log('Checking if the key `' + key + '` is in our local cache');
+	var getCached = function (key) {
 		var item = kango.storage.getItem(key);
-		var currentTime = Math.floor(Date.now() / 1000);
-		if (item == null || item.expire < currentTime) {
-			log('`' + key + '` NOT in local cache')
-			return false;
-		}
-		log('`' + key + '` IS in local cache')
-		return item;
+		return item && item.expire >= Math.floor(Date.now() / 1000) ? item : false;
 	}
-	var setCahed = function (key, item) {
-		log('Setting`' + key + '` in our local cache');
+	var setCached = function (key, item) {
 		item.expire = Math.floor(Date.now() / 1000) + 60*6*6; // 6 hours expire
 		kango.storage.setItem(key, item)
-		return item;
 	}
 	var getDnsRecords = function (hostname) {
 		var apiUrl = 'https://api.bgpview.io/dns/live/' + hostname + '?source=browser_extension';
 		log('DNS query URL: ' + apiUrl);
-		var cachedRecords = getCahed(hostname);
+		var cachedRecords = getCached(hostname);
 		if (cachedRecords !== false) {
 			return displayRecords(cachedRecords);
 		}
@@ -149,7 +102,7 @@ KangoAPI.onReady(function() {
 					return abort();
 				}
 				log(data);
-				setCahed(hostname, data.data);
+				setCached(hostname, data.data);
 				return displayRecords(data.data);
 			},
 			timeout: 6000 // sets timeout to 6 seconds
@@ -160,7 +113,7 @@ KangoAPI.onReady(function() {
 		var apiUrl = 'https://api.bgpview.io/asn/' + asn + '?source=browser_extension';
 		apiUrl += '&with_ixs=true&with_peers=true&with_prefixes=true&with_upstreams=true&with_downstreams=true';
 		log('IP query URL: ' + apiUrl);
-		var cachedInfo = getCahed(asn);
+		var cachedInfo = getCached(asn);
 		if (cachedInfo !== false) {
 			return displayAsnInfo(cachedInfo);
 		}
@@ -177,7 +130,7 @@ KangoAPI.onReady(function() {
 					return abort();
 				}
 				log(data);
-				setCahed(asn, data.data);
+				setCached(asn, data.data);
 				return displayAsnInfo(data.data);
 			},
 			timeout: 6000 // sets timeout to 6 seconds
@@ -186,7 +139,7 @@ KangoAPI.onReady(function() {
 	var getAdressInfo = function (ipAddress) {
 		var apiUrl = 'https://api.bgpview.io/ip/' + ipAddress + '?source=browser_extension';
 		log('IP query URL: ' + apiUrl);
-		var cachedInfo = getCahed(ipAddress);
+		var cachedInfo = getCached(ipAddress);
 		if (cachedInfo !== false) {
 			return displayIpInfo(cachedInfo);
 		}
@@ -203,7 +156,7 @@ KangoAPI.onReady(function() {
 					return abort();
 				}
 				log(data);
-				setCahed(ipAddress, data.data);
+				setCached(ipAddress, data.data);
 				return displayIpInfo(data.data);
 			},
 			timeout: 6000 // sets timeout to 6 seconds
@@ -212,7 +165,7 @@ KangoAPI.onReady(function() {
 	var getPrefixInfo = function (prefix) {
 		var apiUrl = 'https://api.bgpview.io/prefix/' + prefix + '?source=browser_extension';
 		log('Prefix query URL: ' + apiUrl);
-		var cachedInfo = getCahed(prefix);
+		var cachedInfo = getCached(prefix);
 		if (cachedInfo !== false) {
 			return displayPrefixInfo(cachedInfo);
 		}
@@ -229,7 +182,7 @@ KangoAPI.onReady(function() {
 					return abort();
 				}
 				log(data);
-				setCahed(prefix, data.data);
+				setCached(prefix, data.data);
 				return displayPrefixInfo(data.data);
 			},
 			timeout: 6000 // sets timeout to 6 seconds
@@ -585,7 +538,7 @@ KangoAPI.onReady(function() {
 				}
 				tabbedContentHtml += '<tr>';
 				tabbedContentHtml +=	 '<td><img src="' + flagImage + '" title="' + country(ix.country_code)  + '" /></td>';
-				tabbedContentHtml +=	 '<td>' + humanFileSize(ix.speed) + '</td>';
+				tabbedContentHtml +=	 '<td>' + humanReadableBitSpeed(ix.speed * 1000000) + '</td>';
 				tabbedContentHtml +=	 '<td>' + ix.name_full + '</td>';
 				tabbedContentHtml += '</tr>';
 			});
@@ -745,7 +698,7 @@ KangoAPI.onReady(function() {
 		jQuery(".records-tabbed-content").find('.tab-content').html(tabbedContentHtml);
 	}
 	var getAddressCount = function (length, type) {
-		return Math.pow(2, (type === 6 ? 128 : 32) - length);
+		return length >= 0 && ((type === 6 && length <= 128) || length <= 32) ? Math.pow(2, (type === 6 ? 128 : 32) - length) : 0;
 	};
 	var displayRecords = function (data) {
 		log('Processing record display');
